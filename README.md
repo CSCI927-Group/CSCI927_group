@@ -1,7 +1,23 @@
 # CSCI927_group
 group Project for CSCI927
 
+## Shift assistant: 
+##### job duties:
+- [ ] Booking a meeting room. 
+- [ ] Recording the meeting information. 
+- [ ] Record and notify tasks of the week. 
+- [ ] Collate and upload the meeting reports (accompanied by a member contribution report).
+##### Shift schedules:
+| Name      | End Day     |
+| --------- | ----------- |
+| Hogan     | 05 Aug (W3) |
+| Flora     | 12 Aug (W4) |
+| Heyin     | 19 Aug (W5) |
+| Michael   | 26 Aug (W6) |
+| Vincent   | 02 Sep (W7) |
+| Zion      | 09 Sep (W8) |
 
+## Members:
 | Full Name     | Alias     |S Number  |Background   |Language    |UOW email              |
 | ------------- | --------- | -------- |------------ |----------  |---------------------- |
 | Sihua Liu     | Flora     | 8764979  |Management   |Python      | sl923@uowmail.edu.au  |
