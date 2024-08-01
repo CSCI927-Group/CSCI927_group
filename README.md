@@ -1,2 +1,2 @@
 # CSCI927_group
-group Prokect for CSCI927
+group Project for CSCI927
