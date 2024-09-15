@@ -5,6 +5,11 @@ python3 -m venv .venv
 pip install Flask
 ```
 
+run
+```
+flask --app app --debug run
+```
+
 Step 1: Add web route in app.py
 ```python
 @app.route("/name")
