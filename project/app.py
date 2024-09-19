@@ -1,15 +1,36 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 
 app = Flask(__name__)
 
+# Simulate ticket availability in a dictionary (you should replace this with a database)
+ticket_availability = {
+    '2024-09-20': True,
+    '2024-09-21': False,
+    '2024-09-22': True
+}
 
-@app.route("/hello")
-def hello_world():
-    return "<p>Hello, World!!!!</p>"
+# Route to check availability
+@app.route('/check_availability', methods=['GET'])
+def check_availability():
+    date = request.args.get('date')
+    available = ticket_availability.get(date, False)
+    return jsonify({'available': available})
+
+# Route to book tickets
+@app.route('/book_tickets', methods=['POST'])
+def book_tickets():
+    num_tickets = request.form.get('num_tickets')
+    # Handle booking logic here (e.g., save to database)
+    return jsonify({'success': True, 'message': f'{num_tickets} tickets booked successfully!'})
+
 
 @app.route("/")
 def main():
-  return render_template('main.html')
+  return render_template('main.html',tickets=tickets)
+
+@app.route("/ticket.html")
+def ticket():
+  return render_template('ticket.html')
 
 @app.route("/ride")
 def ride():

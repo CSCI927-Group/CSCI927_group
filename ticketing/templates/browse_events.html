@@ -1,0 +1,54 @@
+{% extends 'layout.html' %}
+
+{% block title %}Browse Events{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <h2 class="mb-4">Browse Events</h2>
+
+  <div class="row">
+    <!-- Event 1 -->
+    <div class="col-md-4 mb-4">
+      <div class="card shadow-sm">
+        <img src="https://via.placeholder.com/400x300" class="card-img-top" alt="Event 1">
+        <div class="card-body">
+          <h5 class="card-title">Concert at Central Park</h5>
+          <p>Date: Septembe 19, 2024</p>
+          <p class="card-text">Enjoy a live concert in the heart of Central Park featuring popular bands and artists.</p>
+          <a href="{{ url_for('availability') }}" class="btn btn-primary">View Availability</a>
+          <a href="{{ url_for('event_info', event_id=1) }}" class="btn btn-secondary">More Info</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Event 2 -->
+    <div class="col-md-4 mb-4">
+      <div class="card shadow-sm">
+        <img src="https://via.placeholder.com/400x300" class="card-img-top" alt="Event 2">
+        <div class="card-body">
+          <h5 class="card-title">Food Festival</h5>
+          <p>Date: October 1, 2024</p>
+          <p class="card-text">A celebration of culinary arts with food trucks, chefs, and a variety of delicious foods.</p>
+          <a href="{{ url_for('availability') }}" class="btn btn-primary">View Availability</a>
+          <a href="{{ url_for('event_info', event_id=2) }}" class="btn btn-secondary">More Info</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Event 3 -->
+    <div class="col-md-4 mb-4">
+      <div class="card shadow-sm">
+        <img src="https://via.placeholder.com/400x300" class="card-img-top" alt="Event 3">
+        <div class="card-body">
+          <h5 class="card-title">Art Exhibition</h5>
+          <p>Date: October 10, 2024</p>
+          <p class="card-text">Discover modern and contemporary art at the city's largest art exhibition.</p>
+          <a href="{{ url_for('availability') }}" class="btn btn-primary">View Availability</a>
+          <a href="{{ url_for('event_info', event_id=3) }}" class="btn btn-secondary">More Info</a>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- End of row -->
+</div>
+{% endblock %}

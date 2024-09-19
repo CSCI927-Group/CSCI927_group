@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+
+{% block title %}Payment Successful{% endblock %}
+
+{% block content %}
+<div class="container text-center my-5">
+  <h2 class="display-4 text-success">Payment Processed Successfully!</h2>
+  <p class="lead mt-4">Thank you for your purchase. A confirmation email has been sent to <strong>{{ email }}</strong>.</p>
+  <a href="{{ url_for('index') }}" class="btn btn-primary mt-4">Return to Home</a>
+</div>
+{% endblock %}
