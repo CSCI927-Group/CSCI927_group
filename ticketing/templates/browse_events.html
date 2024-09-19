@@ -7,48 +7,21 @@
   <h2 class="mb-4">Browse Events</h2>
 
   <div class="row">
-    <!-- Event 1 -->
+    <!-- Loop through Events Data -->
+    {% for event_id, event in events.items() %}
     <div class="col-md-4 mb-4">
       <div class="card shadow-sm">
-        <img src="https://via.placeholder.com/400x300" class="card-img-top" alt="Event 1">
+        <img src="{{ event.image }}" class="card-img-top" alt="Event {{ event_id }}">
         <div class="card-body">
-          <h5 class="card-title">Concert at Central Park</h5>
-          <p>Date: Septembe 19, 2024</p>
-          <p class="card-text">Enjoy a live concert in the heart of Central Park featuring popular bands and artists.</p>
+          <h5 class="card-title">{{ event.title }}</h5>
+          <p>Date: {{ event.date }}</p>
+          <p class="card-text">{{ event.description }}</p>
           <a href="{{ url_for('availability') }}" class="btn btn-primary">View Availability</a>
-          <a href="{{ url_for('event_info', event_id=1) }}" class="btn btn-secondary">More Info</a>
+          <a href="{{ url_for('event_info', event_id=event_id) }}" class="btn btn-secondary">More Info</a>
         </div>
       </div>
     </div>
-
-    <!-- Event 2 -->
-    <div class="col-md-4 mb-4">
-      <div class="card shadow-sm">
-        <img src="https://via.placeholder.com/400x300" class="card-img-top" alt="Event 2">
-        <div class="card-body">
-          <h5 class="card-title">Food Festival</h5>
-          <p>Date: October 1, 2024</p>
-          <p class="card-text">A celebration of culinary arts with food trucks, chefs, and a variety of delicious foods.</p>
-          <a href="{{ url_for('availability') }}" class="btn btn-primary">View Availability</a>
-          <a href="{{ url_for('event_info', event_id=2) }}" class="btn btn-secondary">More Info</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Event 3 -->
-    <div class="col-md-4 mb-4">
-      <div class="card shadow-sm">
-        <img src="https://via.placeholder.com/400x300" class="card-img-top" alt="Event 3">
-        <div class="card-body">
-          <h5 class="card-title">Art Exhibition</h5>
-          <p>Date: October 10, 2024</p>
-          <p class="card-text">Discover modern and contemporary art at the city's largest art exhibition.</p>
-          <a href="{{ url_for('availability') }}" class="btn btn-primary">View Availability</a>
-          <a href="{{ url_for('event_info', event_id=3) }}" class="btn btn-secondary">More Info</a>
-        </div>
-      </div>
-    </div>
-
+    {% endfor %}
   </div> <!-- End of row -->
 </div>
 {% endblock %}

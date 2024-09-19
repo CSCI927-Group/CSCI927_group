@@ -6,29 +6,38 @@
 <div class="container my-5">
   <h2 class="mb-4">News and Updates</h2>
 
-  <!-- News 1 -->
-  <div class="card mb-4">
-    <div class="card-body">
-      <h5 class="card-title">New Attraction Opening in November</h5>
-      <p class="card-text">A brand new roller coaster attraction is opening next month at the city's amusement park.</p>
+  <!-- Loop through News Data -->
+  {% for news_id, news in news_data.items() %}
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <img src="{{ news.image }}" class="img-fluid rounded" alt="News Image {{ news_id }}">
+    </div>
+    <div class="col-md-8">
+      <span class="text-primary">News</span> &nbsp; <span class="text-muted">• {{ news.source }}</span>
+      <h4 class="fw-bold">
+        <a href="{{ url_for('news_detail', news_id=news_id) }}" class="text-dark text-decoration-none">{{ news.title }}</a>
+      </h4>
+      <p>{{ news.content }}</p>
+      <small class="text-muted">{{ news.read_time }}</small>
     </div>
   </div>
+  {% endfor %}
 
-  <!-- News 2 -->
-  <div class="card mb-4">
-    <div class="card-body">
-      <h5 class="card-title">Concert Series Announced</h5>
-      <p class="card-text">The annual concert series will return this winter, featuring top artists from around the globe.</p>
+  <!-- Loop through Updates Data -->
+  {% for update_id, update in updates_data.items() %}
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <img src="{{ update.image }}" class="img-fluid rounded" alt="Update Image {{ update_id }}">
+    </div>
+    <div class="col-md-8">
+      <span class="text-danger">Update</span> &nbsp; <span class="text-muted">• {{ update.source }}</span>
+      <h4 class="fw-bold">
+        <a href="{{ url_for('update_detail', update_id=update_id) }}" class="text-dark text-decoration-none">{{ update.title }}</a>
+      </h4>
+      <p>{{ update.content }}</p>
+      <small class="text-muted">{{ update.read_time }}</small>
     </div>
   </div>
-
-  <!-- News 3 -->
-  <div class="card mb-4">
-    <div class="card-body">
-      <h5 class="card-title">Food Truck Festival</h5>
-      <p class="card-text">The popular food truck festival is back with more trucks and exciting culinary experiences.</p>
-    </div>
-  </div>
-  
+  {% endfor %}
 </div>
 {% endblock %}

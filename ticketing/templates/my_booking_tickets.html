@@ -1,21 +1,19 @@
 {% extends 'layout.html' %}
 
-{% block title %}My Bookings{% endblock %}
+{% block title %}Your Bookings{% endblock %}
 
 {% block content %}
 <div class="container my-5">
-  <h2 class="mb-4">Your Bookings</h2>
-  
+  <h2 class="mb-4">Your Bookings for {{ email }}</h2>
+
   <ul class="list-group">
     {% for booking in bookings %}
     <li class="list-group-item">
       <h5>{{ booking.event }}</h5>
-      <p><strong>Date:</strong> {{ booking.date }}</p>
-      <p><strong>Tickets:</strong> {{ booking.tickets }}</p>
+      <p>Date: {{ booking.date }}</p>
+      <p>Tickets: {{ booking.tickets }}</p>
     </li>
     {% endfor %}
   </ul>
-
-  <a href="{{ url_for('index') }}" class="btn btn-primary mt-4">Return to Home</a>
 </div>
 {% endblock %}
