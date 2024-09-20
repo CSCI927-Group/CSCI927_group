@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block title %}Accommodations Availability{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h2 class="mb-4">Select a Date to View Accommodation Availability</h2>
+
+  <ul class="list-group">
+    {% for accommodation in accommodations %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <span>{{ accommodation.date }}</span>
+      <span class="{% if accommodation.available %}text-success{% else %}text-danger{% endif %}">
+        {% if accommodation.available %}Available{% else %}Sold Out{% endif %}
+      </span>
+      <a href="{{ url_for('payment') }}" 
+         class="btn {% if accommodation.available %}btn-primary{% else %}btn-secondary disabled{% endif %}" 
+         {% if not accommodation.available %}aria-disabled="true" disabled{% endif %}>
+         {% if accommodation.available %}Book Now{% else %}Sold Out{% endif %}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

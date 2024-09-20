@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+
+{% block title %}Reviews and Ratings{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <h2 class="mb-4 d-flex justify-content-between align-items-center">
+    Reviews and Ratings
+    <a href="{{ url_for('review_content') }}" class="btn btn-primary">Start Review</a>
+  </h2>
+
+  <!-- Loop through News Data -->
+  {% for news_id, news in news_data.items() %}
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <img src="{{ news.image }}" class="img-fluid rounded" alt="News Image {{ news_id }}">
+    </div>
+    <div class="col-md-8">
+      <span class="text-primary">Reviews</span> &nbsp; <span class="text-muted">• {{ news.source }}</span>
+      <h4 class="fw-bold">
+        <a href="{{ url_for('news_detail', news_id=news_id) }}" class="text-dark text-decoration-none">{{ news.title }}</a>
+      </h4>
+      <p>{{ news.content }}</p>
+      <small class="text-muted">{{ news.read_time }}</small>
+    </div>
+  </div>
+  {% endfor %}
+
+  <!-- Loop through Updates Data -->
+  {% for update_id, update in updates_data.items() %}
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <img src="{{ update.image }}" class="img-fluid rounded" alt="Update Image {{ update_id }}">
+    </div>
+    <div class="col-md-8">
+      <span class="text-danger">Update</span> &nbsp; <span class="text-muted">• {{ update.source }}</span>
+      <h4 class="fw-bold">
+        <a href="{{ url_for('update_detail', update_id=update_id) }}" class="text-dark text-decoration-none">{{ update.title }}</a>
+      </h4>
+      <p>{{ update.content }}</p>
+      <small class="text-muted">{{ update.Ratings }}</small>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
