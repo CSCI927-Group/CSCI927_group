@@ -1,0 +1,51 @@
+{% extends 'framework.html' %}
+{% block title %}Ride Route{% endblock %}
+
+{% block body %}
+<div class="container col-xl-10 col-xxl-8 px-4 py-5">
+  <div class="row g-lg-5 py-5">
+    <form class="col-md-10 mx-auto col-lg-5" action="/ride/payment" method="get">
+      <ul class="list-group mb-3">
+        <li class="list-group-item list-group-item-dark">
+          <div class="row text-center">
+            <div class="col">{{ location }}</div>
+            <div class="col"><i class="bi-arrow-right" style="color: cornflowerblue;"></i></div>
+            <div class="col">{{ destination }}</div>
+          </div>
+        </li>
+      </ul>
+      <ul class="list-group mb-3">
+        {% for route in routes %}
+        <li class="list-group-item">
+          <div class="d-flex w-100 justify-content-between">
+            <label class="form-check-label w-100" role='button'>
+              <input class="form-check-input me-1" type="radio" name="route" value="{{ route.id }}">
+              <span>{{ route.name }}</span>
+            </label>
+            <small>${{ route.price }}</small>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+      <button class="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
+    </form>
+
+    <div class="col-lg-7 text-center text-lg-start">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13167.371473356106!2d150.86135990781247!3d-34.4053396!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b131971e23b2943%3A0x28106b564503fe41!2sUniversity%20of%20Wollongong!5e0!3m2!1sen!2sau!4v1726401636876!5m2!1sen!2sau" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+</div>
+<script>
+document.querySelector('form').addEventListener('submit', (e) => {
+  e.preventDefault()
+  const formData = new FormData(e.target)
+  const data = {...formData.entries()}
+  const route = formData.get('route')
+  if (!route) {
+    alert('Please select route')
+  } else {
+    e.target.submit()
+  }
+})
+</script>
+{% endblock %}
