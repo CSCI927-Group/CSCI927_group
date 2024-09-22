@@ -5,10 +5,14 @@ from . import db
 
 app = Blueprint('app', __name__)
 def log(event):
-    user_id = session.get('user_id')
-    user_name = session.get('user_name')
-    current_app.logger.info(f'{user_id}, {user_name}, {event}, CUSTOMLOG')
+    id, name = getUser()
+    current_app.logger.info(f'{id}, {name}, {event}, CUSTOMLOG')
 
+def getUser():
+    return [
+        session.get('user_id', 0),
+        session.get('user_name', 'anonymous')
+    ]
 #
 ##
 ### Route logic
