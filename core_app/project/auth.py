@@ -31,8 +31,8 @@ def login_post():
         return redirect(url_for('auth.login'))
     
     login_user(user, remember=remember)
-    
-    if direction:
+
+    if direction != 'None':
         return redirect(direction + f'?user_id={user.id}&user_name={user.name}')
     else:
         return redirect(url_for('main.index'))
