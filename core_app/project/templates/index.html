@@ -3,6 +3,9 @@
 
 {% block body %}
 <div class="container">
+  {% if username %}
+  <h6>Welcome! {{ username }} </h6>
+  {% endif %}
   <div class="row mt-5 row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
     {% for item in list %}
     <div class="col">
