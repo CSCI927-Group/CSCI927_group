@@ -2,3 +2,4 @@
 __pycache__
 info.csv
 info.log
+.DS_Store

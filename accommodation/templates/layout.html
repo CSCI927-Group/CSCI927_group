@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}My Accommodation System{% endblock %}</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Inline Styles -->
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+    main {
+      flex: 1;
+    }
+    footer {
+      background-color: #f8f9fa;
+      padding: 1rem 0;
+      text-align: center;
+    }
+    .btn-primary, .btn-secondary {
+      width: 150px;
+      text-align: center;
+    }
+    .btn-secondary.disabled {
+      background-color: #6c757d;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header Section -->
+  <header class="bg-light shadow-sm mb-4">
+    <div class="container d-flex justify-content-between py-3">
+      <a href="{{ url_for('layout_content') }}" class="text-decoration-none">
+        <h1 class="text-primary">Online Accommodation</h1>
+      </a>
+      <nav>
+        <a href="{{ url_for('layout_content') }}" class="btn btn-outline-primary mx-2">Home</a>
+        <a href="{{ url_for('my_booking') }}" class="btn btn-outline-primary mx-2">My Booking</a>
+        <a href="{{ url_for('cancel_booking') }}" class="btn btn-outline-primary mx-2">Cancel Booking</a>
+        <a href="{{ url_for('simple_reviews') }}" class="btn btn-outline-primary mx-2">Reviews and Ratings</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Block -->
+  <main class="container">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="mt-auto">
+    <div class="container text-center text-muted">
+      © 2024 CSCI927 Sihua Liu
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

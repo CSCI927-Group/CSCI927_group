@@ -1,27 +1,24 @@
-{% extends 'framework.html' %}
+{% extends 'layout.html' %}
+
 {% block title %}Payment{% endblock %}
 
-{% block body %}
+{% block content %}
 <div class="container col-xl-10 col-xxl-8 px-4 py-5">
   <div class="row g-lg-5 py-5">
-      <form class="needs-validation" novalidate="">
+      <!-- Use GET method to collect email and redirect -->
+      <form action="{{ url_for('payment') }}" method="GET" class="needs-validation" novalidate="">
         <h4 class="mb-3">Payment</h4>
 
-        <div class="my-3">
-          <div class="form-check">
-            <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked="" required="">
-            <label class="form-check-label" for="credit">Credit card</label>
-          </div>
-          <div class="form-check">
-            <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required="">
-            <label class="form-check-label" for="debit">Debit card</label>
-          </div>
-          <div class="form-check">
-            <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" required="">
-            <label class="form-check-label" for="paypal">PayPal</label>
+        <!-- Email Field (required) -->
+        <div class="mb-3">
+          <label for="email" class="form-label">Email Address</label>
+          <input type="email" class="form-control" id="email" name="email" required placeholder="you@example.com">
+          <div class="invalid-feedback">
+            Please enter a valid email address.
           </div>
         </div>
 
+        <!-- Card Details (not functional, since we're only collecting email) -->
         <div class="row gy-3">
           <div class="col-md-6">
             <label for="cc-name" class="form-label">Name on card</label>
@@ -59,6 +56,7 @@
 
         <hr class="my-4">
 
+        <!-- Continue to Payment Button -->
         <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
       </form>
     </div>
