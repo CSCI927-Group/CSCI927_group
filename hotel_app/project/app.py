@@ -1,6 +1,6 @@
 from flask import Blueprint, current_app, session, request, render_template, redirect, url_for, jsonify
 import json
-from .objects import Order
+from .objects import Order, OrderEnum
 from . import db
 
 app = Blueprint('app', __name__)
@@ -21,6 +21,64 @@ def index():
     session['user_id'] = request.args.get('user_id', 'default_id')
     session['user_name'] = request.args.get('user_name', 'default_name')
     return redirect(url_for('app.test')) # <--- rename to module's index name
+
+### Hotel
+@app.route("/hotels")
+def hotel_list():
+    log('enter test page')
+    hotel_list = Hotel.query.all()
+    return render_template("test.html", list=hotel_list)
+
+@app.route("/order/add", methods=['POST'])
+def order_add():
+    uid = getUser()[0]
+    name = request.form.get('name')
+    price = request.form.get('price')
+    startDate = request.form.get('startDate')
+    endDate = request.form.get('endDate')
+    status = OrderEnum.ORDER.value
+    
+    order = Order(name=name, price=price, startDate=startDate, endDate=endDate, status=status, uid=uid)
+    db.session.add(order)
+    db.session.commit()
+    return 'Add order success!'
+
+@app.route("/order/cancel", methods=['Delete'])
+def order_cancel():    
+
+    id = request.args.get('id')
+    order = Order.query.filter_by(id=id).first()
+    if order:
+        db.session.delete(order)
+        db.session.commit()
+        return 'Delete order success!' 
+    else:
+        return 'No found order'
+
+@app.route("/order/update", methods=['PUT'])
+def order_update():
+    id = request.form.get('id')
+    order = Order.query.filter_by(id=id).first()
+    order.status = request.form.get('status')
+    db.session.commit()
+    return 'Update order success!'
+
+@app.route("/reviews")
+def review_list():
+    log('enter review page')
+    review_list = Review.query.all()
+    return render_template("test.html", list=review_list)
+
+@app.route("/reviews/add", methods=['POST'])
+def review_add():
+    uid = getUser()[0]
+    oid = request.form.get('id')
+    price = request.form.get('description')
+
+    review = Review(uid=uid, oid=oid, price=price)
+    db.session.add(review)
+    db.session.commit()
+    return 'Add review success!'
 
 @app.route("/test")
 def test():
