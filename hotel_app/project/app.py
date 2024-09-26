@@ -151,3 +151,8 @@ def hotel_payment_success():
 @app.route("/order-list")
 def order_list():
     return render_template("order-list.html", list=[{}, {}], order_state={})
+
+@app.route('/init_data')
+def init_data_interface():
+    init_data()
+    return 'Init data success!'
