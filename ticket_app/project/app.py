@@ -2,6 +2,7 @@ from flask import Blueprint, current_app, session, request, render_template, red
 import json
 from .objects import Order, Event, EventUpdate, Ticketing
 from . import db
+from .init import init_data
 
 app = Blueprint('app', __name__)
 def log(event):
@@ -62,6 +63,12 @@ def test_list():
     order_list = Order.query.all()
     order_dict = [result.as_dict() for result in order_list]
     return json.dumps(order_dict, default=str)
+
+@app.route('/init_data')
+def init_data_interface():
+    init_data()
+    return 'Init data success!'
+    
 
 def book_ticket(ticket_id, email, quantity):
     ticket = Ticketing.query.get(ticket_id)
