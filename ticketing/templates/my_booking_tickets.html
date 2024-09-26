@@ -9,9 +9,9 @@
   <ul class="list-group">
     {% for booking in bookings %}
     <li class="list-group-item">
-      <h5>{{ booking.event }}</h5>
-      <p>Date: {{ booking.date }}</p>
-      <p>Tickets: {{ booking.tickets }}</p>
+      <h5>{{ booking.event.title }}</h5> 
+      <p>Date: {{ booking.date }} - Time Slot: {{ booking.time_slot }}</p> 
+      <p>Tickets Booked: {{ booking.booked_quantity }}</p> 
     </li>
     {% endfor %}
   </ul>

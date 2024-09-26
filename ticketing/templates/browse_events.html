@@ -7,21 +7,24 @@
   <h2 class="mb-4">Browse Events</h2>
 
   <div class="row">
-    <!-- Loop through Events Data -->
-    {% for event_id, event in events.items() %}
+    {% for event in events %}
     <div class="col-md-4 mb-4">
       <div class="card shadow-sm">
-        <img src="{{ event.image }}" class="card-img-top" alt="Event {{ event_id }}">
+        <!-- Add custom class 'image-ratio' to enforce image ratio -->
+        <div class="image-ratio">
+          <img src="{{ event.image }}" class="card-img-top" alt="Event {{ event.id }}">
+        </div>
         <div class="card-body">
           <h5 class="card-title">{{ event.title }}</h5>
           <p>Date: {{ event.date }}</p>
           <p class="card-text">{{ event.description }}</p>
-          <a href="{{ url_for('availability') }}" class="btn btn-primary">View Availability</a>
-          <a href="{{ url_for('event_info', event_id=event_id) }}" class="btn btn-secondary">More Info</a>
+          <!-- Updated View Availability button to pass event_id -->
+          <a href="{{ url_for('availability', event_id=event.id) }}" class="btn btn-primary">View Availability</a>
+          <a href="{{ url_for('event_info', event_id=event.id) }}" class="btn btn-secondary">More Info</a>
         </div>
       </div>
     </div>
     {% endfor %}
-  </div> <!-- End of row -->
+  </div>
 </div>
 {% endblock %}

@@ -8,7 +8,7 @@
 
   <div class="row">
     <div class="col-md-8">
-      <img src="{{ item.image }}" class="img-fluid rounded mb-4" alt="{{ item.title }}">
+      <img src="{{ url_for('static', filename=item.image.replace('src/', '')) }}" class="img-fluid rounded mb-4" alt="{{ item.title }}">
       <p>{{ item.content }}</p>
       <small class="text-muted">{{ item.read_time }}</small>
     </div>

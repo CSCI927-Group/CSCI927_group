@@ -5,14 +5,19 @@
 {% block content %}
 <div class="container my-5">
   <h2 class="mb-4">{{ event.title }}</h2>
+
   <div class="row">
     <div class="col-md-8">
-      <img src="{{ event.image }}" class="img-fluid rounded mb-4" alt="{{ event.title }}">
+      <!-- Replace 'src/' with an empty string -->
+      <img src="{{ url_for('static', filename=event.image.replace('src/', '')) }}" class="img-fluid rounded mb-4" alt="{{ event.title }}">
       <p>{{ event.description }}</p>
-      <p>Date: {{ event.date }}</p>
-      
-      <!-- New "View Availability" Button -->
-      <a href="{{ url_for('availability') }}" class="btn btn-primary mt-3">View Availability</a>
+      <p><strong>Date:</strong> {{ event.date }}</p>
+
+      <h4>Additional Information</h4>
+      <p>{{ event.additional_info }}</p>
+
+      <!-- View Availability button -->
+      <a href="{{ url_for('availability', event_id=event.id) }}" class="btn btn-primary mt-3">View Availability</a>
     </div>
   </div>
 </div>

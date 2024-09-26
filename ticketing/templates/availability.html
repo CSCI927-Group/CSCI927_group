@@ -4,19 +4,20 @@
 
 {% block content %}
 <div class="container">
-  <h2 class="mb-4">Select a Date to View Ticket Availability</h2>
+  <h2 class="mb-4">Ticket Availability for Event</h2>
 
   <ul class="list-group">
     {% for ticket in tickets %}
     <li class="list-group-item d-flex justify-content-between align-items-center">
-      <span>{{ ticket.date }}</span>
-      <span class="{% if ticket.available %}text-success{% else %}text-danger{% endif %}">
-        {% if ticket.available %}Available{% else %}Sold Out{% endif %}
+      <span>{{ ticket.date }} - {{ ticket.time_slot }}</span>
+      <span class="{% if ticket.available_tickets > 0 %}text-success{% else %}text-danger{% endif %}">
+        {% if ticket.available_tickets > 0 %}Available{% else %}Sold Out{% endif %}
       </span>
-      <a href="{{ url_for('payment') }}" 
-         class="btn {% if ticket.available %}btn-primary{% else %}btn-secondary disabled{% endif %}" 
-         {% if not ticket.available %}aria-disabled="true" disabled{% endif %}>
-         {% if ticket.available %}Book Now{% else %}Sold Out{% endif %}
+      <!-- Book Now button to pass ticket_id -->
+      <a href="{{ url_for('payment', ticket_id=ticket.id) }}" 
+         class="btn {% if ticket.available_tickets > 0 %}btn-primary{% else %}btn-secondary disabled{% endif %}"
+         {% if ticket.available_tickets == 0 %}disabled{% endif %}>
+        {% if ticket.available_tickets > 0 %}Book Now{% else %}Sold Out{% endif %}
       </a>
     </li>
     {% endfor %}
