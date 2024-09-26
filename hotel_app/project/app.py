@@ -55,11 +55,19 @@ def order_cancel():
     else:
         return 'No found order'
 
-@app.route("/order/update", methods=['PUT'])
-def order_update():
-    id = request.form.get('id')
+@app.route("/order/checkin", methods=['PUT'])
+def order_checkin():
+    id = request.args.get('id')
     order = Order.query.filter_by(id=id).first()
-    order.status = request.form.get('status')
+    order.status = OrderEnum.CHECK_IN.value
+    db.session.commit()
+    return 'Update order success!'
+
+@app.route("/order/checkout", methods=['PUT'])
+def order_checkout():
+    id = request.args.get('id')
+    order = Order.query.filter_by(id=id).first()
+    order.status = OrderEnum.CHECK_OUT.value
     db.session.commit()
     return 'Update order success!'
 
