@@ -25,21 +25,24 @@ def index():
 
 ### Hotel
 @app.route("/hotels")
-def hotel_list():
+def hotel_index():
     log('enter test page')
     hotel_list = Hotel.query.all()
+    # id = getUser()[0]
+    # order = Hotel.query.filter_by(id=id)
     return render_template("hotel-index.html", list=hotel_list)
 
 @app.route("/order/add", methods=['POST'])
 def order_add():
     uid = getUser()[0]
-    name = request.form.get('name')
+    id = request.form.get('id')
     price = request.form.get('price')
     startDate = request.form.get('startDate')
     endDate = request.form.get('endDate')
     status = OrderEnum.ORDER.value
     
-    order = Order(name=name, price=price, startDate=startDate, endDate=endDate, status=status, uid=uid)
+    hotel = Hotel.query.filter_by(id=id).first()
+    order = Order(name=hotel.name, price=price, startDate=startDate, endDate=endDate, status=status, uid=uid)
     db.session.add(order)
     db.session.commit()
     return 'Add order success!'

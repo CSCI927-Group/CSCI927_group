@@ -33,9 +33,10 @@
 
     <div class="mb-3">
       <label for="price" class="form-label">Price</label>
-      <input type="text" class="form-control" id="price" name="price" placeholder="0.00" disabled>
+      <span id="price"></span>
+      <!-- <input type="text" class="form-control" id="price" name="price" placeholder="0.00" disabled>
       <div class="invalid-feedback">
-        Please enter a valid price.
+        Please enter a valid price. -->
       </div>
     </div>
 
@@ -62,11 +63,11 @@
 <script>
 const urlParams = new URLSearchParams(location.search)
 document.getElementById('id').value = urlParams.get('id')
-document.getElementById('price').value = urlParams.get('price')
+document.getElementById('price').innerText = urlParams.get('price')
 
 document.querySelector('#people').addEventListener('input', function() {
   const days = 1 // 
-  document.getElementById('price').value = urlParams.get('price') * days
+  document.getElementById('price').innerText = urlParams.get('price') * days
 })
 
 function onSubmit(self) {
@@ -75,11 +76,12 @@ function onSubmit(self) {
     // const route = data.get('route')
     // if (!route) {
     //   return alert('Please select route')
-    // }
-
+    // }ajax
+    data.set('price', document.getElementById('price').innerText)
     fetch('{{ url_for('app.order_add') }}', { method: 'POST', body: data })
       .then(res => res.text()).then(res => {
         try {
+          alert(res)
           location.replace('{{ url_for('app.hotel_payment_info') }}')
         } catch(e) {
           console.log(e)

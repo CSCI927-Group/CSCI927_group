@@ -2,6 +2,7 @@ from . import db
 from enum import Enum
 
 class OrderEnum(Enum):
+    UNPAY = 0
     ORDER = 1
     CHECK_IN = 2
     CHECK_OUT = 3
