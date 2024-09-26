@@ -1,6 +1,5 @@
 from .objects import Hotel
 from . import db
-from .init import init_data
 
 def init_data():
 

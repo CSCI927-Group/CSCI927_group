@@ -2,6 +2,7 @@ from flask import Blueprint, current_app, session, request, render_template, red
 import json
 from .objects import Order, OrderEnum, Review
 from . import db
+from .init import init_data
 
 app = Blueprint('app', __name__)
 def log(event):
