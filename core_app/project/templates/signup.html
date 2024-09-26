@@ -1,0 +1,47 @@
+{% extends "layout_pure.html" %}
+{% block title %}Signup{% endblock %}
+
+{% block body %}
+<main class="w-100 m-auto mt-5" style="max-width: 330px; padding: 1rem">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="alert alert-danger">
+        {{ messages[0] }}. Go to <a href="{{ url_for('auth.login') }}">login page</a>.
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="/signup">
+        <i class="bi-balloon-fill" style="font-size: 2rem; color: cornflowerblue;"></i>
+        <h1 class="h3 mb-3 fw-normal">Sign up</h1>
+
+        <div>
+            <div class="form-floating">
+                <input class="form-control" type="email" id="email" name="email" placeholder="Email">
+                <label for="email">Email address</label>
+            </div>
+            <div class="form-floating">
+                <input class="form-control" type="name" id="name" name="name" placeholder="Name">
+                <label for="name">Name</label>
+            </div>
+            <div class="form-floating">
+                <input class="form-control" type="password" id="password" name="password" placeholder="Password">
+                <label for="password">Password</label>
+            </div>
+        </div>
+
+        <button class="btn btn-primary w-100 py-2 mt-3 " type="submit">Sign up</button>
+    </form>
+</main>
+<style>
+    .form-floating:not(:first-child) input {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+    .form-floating:not(:last-child) input {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+</style>
+{% endblock %}

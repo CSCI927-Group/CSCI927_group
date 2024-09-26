@@ -1,0 +1,25 @@
+{% extends 'framework.html' %}
+{% block title %}Ride{% endblock %}
+
+{% block body %}
+<div class="px-4 py-5 my-5 text-center">
+  <i class="bi bi-emoji-smile" style="font-size: 80px"></i>
+  <h1 class="display-5 fw-bold text-body-emphasis">Service start</h1>
+  <div class="col-lg-6 mx-auto">
+    <p class="lead mb-4">Glad to be of service.</p>
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+      <button type="button" class="btn btn-primary btn-lg px-4 gap-3" onclick="nextStep()">Complete</button>
+    </div>
+  </div>
+</div>
+<script>
+  function nextStep() {
+    if (confirm('Confirm to complete?')) {
+      fetch('{{ url_for('app.order_complete') }}' + location.search)
+        .then(res => res.text()).then(res => {
+          location.replace('{{ url_for('app.ride_complete') }}' + location.search)
+        })
+    }
+  }
+  </script>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'framework.html' %}
+{% block title %}Test{% endblock %}
+
+{% block body %}
+<div class="col-lg-8 mx-auto my-5">
+  <form class=" pb-3 row row-cols-lg-auto g-3 align-items-center" onsubmit="return onSubmit(this)">
+    <div class="col-12"><input type="text" class="form-control" name="id" placeholder="ID(option)"></div>
+    <div class="col-12"><input type="text" class="form-control" name="name" placeholder="Name"></div>
+    <div class="col-12"><input type="text" class="form-control" name="price" placeholder="Price"></div>
+    <button class="btn btn-primary">Add/Update</button>
+  </form>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Price</th>
+        <th scope="col">Operate</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in list %}
+      <tr>
+        <th>{{ item.id }}</th>
+        <th>{{ item.name }}</th>
+        <th>{{ item.price }}</th>
+        <th>
+          <button class="btn btn-primary btn-sm" onclick="onUpdate({{ item.as_dict() }})">
+            <i class="bi bi-hammer"></i> Edit
+          </button>
+          <button class="btn btn-danger btn-sm" onclick="onDelete({{item.id}})">
+            <i class="bi bi-trash"></i> Delete
+          </button>
+        </th>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<script>
+function onUpdate({ id, name, price }) {
+  document.querySelector('input[name="id"]').value = id
+  document.querySelector('input[name="name"]').value = name
+  document.querySelector('input[name="price"]').value = price
+}
+function onDelete(id){
+  fetch('/test/delete?id=' + id, { method: 'DELETE' })
+  .then(json=>json.text()).then(res => {
+    alert(res)
+    location.reload()
+  })
+}
+function onSubmit(self){
+  // Prevent the form submitting
+  event.preventDefault()
+
+  data = new FormData(self)
+
+  if (!data.get('name')) return alert('name is empty')
+  if (!data.get('price')) return alert('price is empty')
+
+  let url = data.get('id') ? '/test/update' : '/test/add'
+  let method = data.get('id') ? 'PUT' : 'POST'
+  fetch(url, {method, body: data })
+    .then(json=>json.text()).then(res => {
+    alert(res)
+    location.reload()
+  })
+}
+</script>
+{% endblock %}
