@@ -1,9 +1,11 @@
 from flask import Flask, render_template, redirect, url_for, request,flash
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
 # from data import ticket_data,news_data,updates_data,bookings,events
 
 app = Flask(__name__, static_folder='src')
+CORS(app)
 app.secret_key = 'your_secret_key'  # Needed for flashing messages
 
 
@@ -71,9 +73,10 @@ def availability(event_id):
 def payment():
     ticket_id = request.args.get('ticket_id') 
     email = request.args.get('email') 
+    quantity = request.args.get('quantity', 1) 
 
     if email and ticket_id:
-        return redirect(url_for('payment_success', email=email, ticket_id=ticket_id))
+        return redirect(url_for('payment_success', email=email, ticket_id=ticket_id, quantity=quantity))
     
     return render_template('payment.html', ticket_id=ticket_id)
 
