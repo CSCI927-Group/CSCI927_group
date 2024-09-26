@@ -1,6 +1,6 @@
 from flask import Blueprint, current_app, session, request, render_template, redirect, url_for, jsonify
 import json
-from .objects import Order, OrderEnum
+from .objects import Order, OrderEnum, Review
 from . import db
 
 app = Blueprint('app', __name__)
@@ -81,9 +81,9 @@ def review_list():
 def review_add():
     uid = getUser()[0]
     oid = request.form.get('id')
-    price = request.form.get('description')
+    description = request.form.get('description')
 
-    review = Review(uid=uid, oid=oid, price=price)
+    review = Review(uid=uid, oid=oid, description=description)
     db.session.add(review)
     db.session.commit()
     return 'Add review success!'
