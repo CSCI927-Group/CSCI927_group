@@ -15,7 +15,7 @@
         {% if ticket.available_tickets > 0 %}Available{% else %}Sold Out{% endif %}
       </span>
       <!-- Book Now button to pass ticket_id -->
-      <a href="{{ url_for('payment', ticket_id=ticket.id) }}" 
+      <a href="{{ url_for('app.payment', ticket_id=ticket.id) }}" 
          class="btn {% if ticket.available_tickets > 0 %}btn-primary{% else %}btn-secondary disabled{% endif %}"
          {% if ticket.available_tickets == 0 %}disabled{% endif %}>
         {% if ticket.available_tickets > 0 %}Book Now{% else %}Sold Out{% endif %}

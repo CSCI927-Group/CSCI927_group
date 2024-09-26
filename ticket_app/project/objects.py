@@ -18,8 +18,8 @@ class Event(db.Model):
     additional_info = db.Column(db.Text, nullable=True)
 
 
-    # ticketings = db.relationship('Ticketing', backref='event', lazy=True)
-    # updates = db.relationship('EventUpdate', backref='event', lazy=True)
+    ticketings = db.relationship('Ticketing', backref='event', lazy=True)
+    updates = db.relationship('EventUpdate', backref='event', lazy=True)
 
 class Ticketing(db.Model):
     id = db.Column(db.Integer, primary_key=True)

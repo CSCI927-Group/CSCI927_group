@@ -17,7 +17,7 @@
     {% endif %}
   {% endwith %}
 
-  <form method="GET" action="{{ url_for('my_booking_check') }}">
+  <form method="GET" action="{{ url_for('app.my_booking_check') }}">
     <div class="mb-3">
       <label for="email" class="form-label">Enter Your Email Address</label>
       <input type="email" class="form-control form-control-lg" id="email" name="email" required placeholder="you@example.com">

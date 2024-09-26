@@ -4,7 +4,7 @@ from .objects import Order, Event, EventUpdate, Ticketing
 from . import db
 from .init import init_data
 
-app = Blueprint('app', __name__)
+app = Blueprint('app', __name__, static_folder='src')
 def log(event):
     id, name = getUser()
     current_app.logger.info(f'{id}, {name}, {event}, CUSTOMLOG')
@@ -21,7 +21,9 @@ def getUser():
 def index():
     session['user_id'] = request.args.get('user_id', 'default_id')
     session['user_name'] = request.args.get('user_name', 'default_name')
-    return redirect(url_for('app.news')) # <--- rename to module's index name
+    log("enter index")
+    return render_template('index.html')
+
 
 @app.route("/test")
 def test():
@@ -94,7 +96,7 @@ def payment():
     quantity = request.args.get('quantity', 1) 
 
     if email and ticket_id:
-        return redirect(url_for('payment_success', email=email, ticket_id=ticket_id, quantity=quantity))
+        return redirect(url_for('app.payment_success', email=email, ticket_id=ticket_id, quantity=quantity))
     
     return render_template('payment.html', ticket_id=ticket_id)
 
@@ -118,6 +120,7 @@ def payment_success():
 #my booking page
 @app.route('/my_booking')
 def my_booking():
+    log("enter my booking page")
     return render_template('my_booking.html')
 @app.route('/my-booking-check', methods=['GET'])
 def my_booking_check():

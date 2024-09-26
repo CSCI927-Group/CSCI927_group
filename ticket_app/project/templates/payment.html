@@ -14,7 +14,7 @@
         <div class="card-body">
           <p>Please enter your details below to complete the booking.</p>
           
-          <form action="{{ url_for('payment') }}" method="GET" class="needs-validation" novalidate>
+          <form action="{{ url_for('app.payment') }}" method="GET" class="needs-validation" novalidate>
             <!-- Hidden field to pass ticket_id -->
             <input type="hidden" name="ticket_id" value="{{ request.args.get('ticket_id') }}">
 
