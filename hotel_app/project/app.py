@@ -62,3 +62,26 @@ def test_list():
     order_list = Order.query.all()
     order_dict = [result.as_dict() for result in order_list]
     return json.dumps(order_dict, default=str)
+
+@app.route("/hotel-index")
+def hotel_index():
+    # log('enter hotel page')
+    # order_list = Order.query.all()
+    return render_template("hotel-index.html", list=[{}, {}, {}])
+
+@app.route("/hotel-order")
+def hotel_order():
+    return render_template("hotel-order.html")
+
+@app.route("/hotel-payment")
+def hotel_payment():
+    return render_template("hotel-payment.html")
+
+@app.route("/hotel-payment-success")
+def hotel_payment_success():
+    return render_template("hotel-payment-success.html")
+
+
+@app.route("/order-list")
+def order_list():
+    return render_template("order-list.html", list=[{}, {}], order_state={})
