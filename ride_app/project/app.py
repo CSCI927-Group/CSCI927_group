@@ -5,13 +5,14 @@ from . import db
 
 app = Blueprint('app', __name__)
 def log(event):
-    id, name = getUser()
+    id, name, email = getUser()
     current_app.logger.info(f'{id}, {name}, {event}, CUSTOMLOG')
 
 def getUser():
     return [
         session.get('user_id', 0),
-        session.get('user_name', 'anonymous')
+        session.get('user_name', 'anonymous'),
+        session.get('user_email', 'none')
     ]
     
 #
@@ -22,6 +23,7 @@ def index():
     if request.args.get('user_id'):
         session['user_id'] = request.args.get('user_id')
         session['user_name'] = request.args.get('user_name')
+        session['user_email'] = request.args.get('user_email')
 
     return redirect(url_for('app.ride')) # <--- rename to module's index name
 
@@ -123,7 +125,7 @@ def order_delete():
 
 @app.route('/ride/order_list')
 def order_list():
-    id, name = getUser()
+    id, name, email = getUser()
     user = { 'id': id, 'name': name}
     
     list = Order.query.filter_by(user_id=id)

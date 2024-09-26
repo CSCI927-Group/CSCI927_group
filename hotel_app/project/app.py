@@ -6,21 +6,29 @@ from .init import init_data
 
 app = Blueprint('app', __name__)
 def log(event):
-    id, name = getUser()
+    id, name, email = getUser()
     current_app.logger.info(f'{id}, {name}, {event}, CUSTOMLOG')
 
 def getUser():
     return [
         session.get('user_id', 0),
-        session.get('user_name', 'anonymous')
+        session.get('user_name', 'anonymous'),
+        session.get('user_email', 'none')
     ]
 #
 ##
 ### Route logic
+
+# @app.route('/init_data')
+# def init_data_interface():
+#     init_data()
+#     return 'Init data success!'
+
 @app.route("/")
 def index():
-    session['user_id'] = request.args.get('user_id', 'default_id')
-    session['user_name'] = request.args.get('user_name', 'default_name')
+    session['user_id'] = request.args.get('user_id')
+    session['user_name'] = request.args.get('user_name')
+    session['user_email'] = request.args.get('user_email')
     return render_template('welcome.html')
 
 ### Hotel
@@ -112,11 +120,6 @@ def order_list():
     list = Order.query.all()
     order_state = { state.value: state.name.lower() for state in OrderEnum}
     return render_template("order-list.html", list=list, order_state=order_state)
-
-@app.route('/init_data')
-def init_data_interface():
-    init_data()
-    return 'Init data success!'
 
 @app.route('/review_content', methods=['GET'])
 def review_content():

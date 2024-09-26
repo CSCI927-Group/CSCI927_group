@@ -6,21 +6,29 @@ from .init import init_data
 
 app = Blueprint('app', __name__, static_folder='src')
 def log(event):
-    id, name = getUser()
+    id, name, email = getUser()
     current_app.logger.info(f'{id}, {name}, {event}, CUSTOMLOG')
 
 def getUser():
     return [
         session.get('user_id', 0),
-        session.get('user_name', 'anonymous')
+        session.get('user_name', 'anonymous'),
+        session.get('user_email', 'none')
     ]
 #
 ##
 ### Route logic
+
+# @app.route('/init_data')
+# def init_data_interface():
+#     init_data()
+#     return 'Init data success!'
+
 @app.route("/")
 def index():
-    session['user_id'] = request.args.get('user_id', 'default_id')
-    session['user_name'] = request.args.get('user_name', 'default_name')
+    session['user_id'] = request.args.get('user_id')
+    session['user_name'] = request.args.get('user_name')
+    session['user_email'] = request.args.get('user_email')
     log("enter index")
     return render_template('index.html')
 
@@ -65,12 +73,6 @@ def test_list():
     order_list = Order.query.all()
     order_dict = [result.as_dict() for result in order_list]
     return json.dumps(order_dict, default=str)
-
-@app.route('/init_data')
-def init_data_interface():
-    init_data()
-    return 'Init data success!'
-    
 
 def book_ticket(ticket_id, email, quantity):
     ticket = Ticketing.query.get(ticket_id)

@@ -13,7 +13,7 @@ def login():
     if not current_user.is_authenticated:
         return render_template('login.html', direction=direction)
     elif direction:
-        return redirect(direction + f'?user_id={current_user.id}&user_name={current_user.name}')
+        return redirect(direction + f'?user_id={current_user.id}&user_name={current_user.name}&user_email={current_user.email}')
     else:
         return redirect(url_for('main.index'))
 
