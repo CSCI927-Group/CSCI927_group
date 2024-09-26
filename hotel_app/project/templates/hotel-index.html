@@ -16,8 +16,8 @@
           <h5 class="card-title">{{ event.title }}</h5>
           <p>Date: {{ event.date }}</p>
           <p class="card-text">{{ event.description }}</p>
-          <a href="" class="btn btn-primary">View Availability</a>
-          <a href="" class="btn btn-secondary">More Info</a>
+          <a href="{{ url_for('app.hotel_order')}}" class="btn btn-primary">Book Now</a>
+          <!-- <a href="" class="btn btn-secondary">More Info</a> -->
         </div>
       </div>
     </div>

@@ -5,24 +5,24 @@
 {% block content %}
 <div class="container col-xl-10 col-xxl-8 px-4 py-5">
   <div class="row g-lg-5 py-5">
-      <!-- Use GET method to collect email and redirect -->
-      <form action="" method="GET" class="needs-validation" novalidate="">
+      <!-- Use POST method to collect email and card details -->
+      <form action="{{ url_for('app.hotel_payment_info') }}" method="POST" class="needs-validation" novalidate>
         <h4 class="mb-3">Payment</h4>
 
-        <!-- Email Field (required) -->
+        <!-- Email Field (required)
         <div class="mb-3">
           <label for="email" class="form-label">Email Address</label>
           <input type="email" class="form-control" id="email" name="email" required placeholder="you@example.com">
           <div class="invalid-feedback">
             Please enter a valid email address.
           </div>
-        </div>
+        </div> -->
 
-        <!-- Card Details (not functional, since we're only collecting email) -->
+        <!-- Card Details -->
         <div class="row gy-3">
           <div class="col-md-6">
-            <label for="cc-name" class="form-label">Name on card</label>
-            <input type="text" class="form-control" id="cc-name" placeholder="" required="">
+            <label for="cc-name" class="form-label">Name on Card</label>
+            <input type="text" class="form-control" id="cc-name" name="cc_name" required placeholder="">
             <small class="text-body-secondary">Full name as displayed on card</small>
             <div class="invalid-feedback">
               Name on card is required
@@ -30,8 +30,8 @@
           </div>
 
           <div class="col-md-6">
-            <label for="cc-number" class="form-label">Credit card number</label>
-            <input type="text" class="form-control" id="cc-number" placeholder="" required="">
+            <label for="cc-number" class="form-label">Credit Card Number</label>
+            <input type="text" class="form-control" id="cc-number" name="cc_number" required placeholder="">
             <div class="invalid-feedback">
               Credit card number is required
             </div>
@@ -39,17 +39,17 @@
 
           <div class="col-md-3">
             <label for="cc-expiration" class="form-label">Expiration</label>
-            <input type="text" class="form-control" id="cc-expiration" placeholder="" required="">
+            <input type="text" class="form-control" id="cc-expiration" name="cc_expiration" required placeholder="MM/YY">
             <div class="invalid-feedback">
-              Expiration date required
+              Expiration date is required
             </div>
           </div>
 
           <div class="col-md-3">
             <label for="cc-cvv" class="form-label">CVV</label>
-            <input type="text" class="form-control" id="cc-cvv" placeholder="" required="">
+            <input type="text" class="form-control" id="cc-cvv" name="cc_cvv" required placeholder="">
             <div class="invalid-feedback">
-              Security code required
+              Security code is required
             </div>
           </div>
         </div>
@@ -57,7 +57,7 @@
         <hr class="my-4">
 
         <!-- Continue to Payment Button -->
-        <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+        <a href="{{ url_for('app.hotel_payment_success')}}" class="btn btn-primary">Continue to Pay</a>
       </form>
     </div>
 </div>

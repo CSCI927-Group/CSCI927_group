@@ -21,7 +21,7 @@ def getUser():
 def index():
     session['user_id'] = request.args.get('user_id', 'default_id')
     session['user_name'] = request.args.get('user_name', 'default_name')
-    return redirect(url_for('app.test')) # <--- rename to module's index name
+    return render_template('welcome.html')
 
 ### Hotel
 @app.route("/hotels")
@@ -140,13 +140,13 @@ def hotel_index():
 def hotel_order():
     return render_template("hotel-order.html")
 
-@app.route("/hotel-payment")
-def hotel_payment():
-    return render_template("hotel-payment.html")
+@app.route("/hotel_payment_info")
+def hotel_payment_info():
+    return render_template("hotel_payment_info.html")
 
-@app.route("/hotel-payment-success")
+@app.route("/hotel_payment_success")
 def hotel_payment_success():
-    return render_template("hotel-payment-success.html")
+    return render_template("hotel_payment_success.html")
 
 
 @app.route("/order-list")
@@ -157,3 +157,8 @@ def order_list():
 def init_data_interface():
     init_data()
     return 'Init data success!'
+
+@app.route('/review_content', methods=['GET'])
+def review_content():
+    return render_template('review_content.html')
+

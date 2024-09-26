@@ -3,18 +3,46 @@
 {% block title %}Accommodations Availability{% endblock %}
 
 {% block content %}
-<div class="container">
-  <h2 class="mb-4">Select a Date to View Accommodation Availability</h2>
+<div class="container col-xl-10 col-xxl-8 px-4 py-5">
+  <h2 class="mb-4">Select details to book</h2>
 
-  <form action="">
-    <input type="text">
-    <input type="text">
-    <input type="text">
-    <input type="text">
-    <input type="text">
+  <form action="{{ url_for('app.hotel_payment_info') }}" method="POST" class="needs-validation" novalidate>
+    <div class="mb-3">
+      <label for="start-date" class="form-label">Start Date</label>
+      <input type="date" class="form-control" id="start-date" name="start_date" required>
+      <div class="invalid-feedback">
+        Please select a valid start date.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="end-date" class="form-label">End Date</label>
+      <input type="date" class="form-control" id="end-date" name="end_date" required>
+      <div class="invalid-feedback">
+        Please select a valid end date.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="number-of-people" class="form-label">Number of People</label>
+      <input type="number" class="form-control" id="number-of-people" name="number_of_people" required placeholder="1" min="1">
+      <div class="invalid-feedback">
+        Please enter the number of people.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="price" class="form-label">Price</label>
+      <input type="text" class="form-control" id="price" name="price" required placeholder="0.00">
+      <div class="invalid-feedback">
+        Please enter a valid price.
+      </div>
+    </div>
+
+    <a href="{{ url_for('app.hotel_payment_info')}}" class="btn btn-primary">Confirm Booking</a>
   </form>
-  
-  <ul class="list-group">
+
+  <ul class="list-group mt-4">
     {% for accommodation in accommodations %}
     <li class="list-group-item d-flex justify-content-between align-items-center">
       <span>{{ accommodation.date }}</span>
@@ -29,5 +57,5 @@
     </li>
     {% endfor %}
   </ul>
-</div>
+</div> 
 {% endblock %}

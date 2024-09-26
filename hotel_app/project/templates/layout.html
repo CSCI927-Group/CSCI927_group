@@ -45,10 +45,9 @@
         <h1 class="text-primary">Online Accommodation</h1>
       </a>
       <nav>
-        <a href="" class="btn btn-outline-primary mx-2">Home</a>
-        <a href="" class="btn btn-outline-primary mx-2">My Booking</a>
-        <a href="" class="btn btn-outline-primary mx-2">Cancel Booking</a>
-        <a href="" class="btn btn-outline-primary mx-2">Reviews and Ratings</a>
+        <a href="{{ url_for('app.index')}}" class="btn btn-outline-primary mx-2">Home</a>
+        <a href="{{ url_for('app.my_booking)}}" class="btn btn-outline-primary mx-2">My Booking</a>
+        <a href="{{ url_for('app.review_content')}}" class="btn btn-outline-primary mx-2">Reviews and Ratings</a>
       </nav>
     </div>
   </header>
