@@ -6,10 +6,10 @@
 <div class="container col-xl-10 col-xxl-8 px-4 py-5">
   <h2 class="mb-4">Select details to book</h2>
 
-  <form action="{{ url_for('app.hotel_payment_info') }}" method="POST" class="needs-validation" novalidate>
+  <form method="POST" class="needs-validation" onsubmit="return onSubmit(this)">
     <div class="mb-3">
       <label for="start-date" class="form-label">Start Date</label>
-      <input type="date" class="form-control" id="start-date" name="start_date" required>
+      <input type="date" class="form-control" id="start-date" name="startDate" required>
       <div class="invalid-feedback">
         Please select a valid start date.
       </div>
@@ -17,7 +17,7 @@
 
     <div class="mb-3">
       <label for="end-date" class="form-label">End Date</label>
-      <input type="date" class="form-control" id="end-date" name="end_date" required>
+      <input type="date" class="form-control" id="end-date" name="endDate" required>
       <div class="invalid-feedback">
         Please select a valid end date.
       </div>
@@ -25,7 +25,7 @@
 
     <div class="mb-3">
       <label for="number-of-people" class="form-label">Number of People</label>
-      <input type="number" class="form-control" id="number-of-people" name="number_of_people" required placeholder="1" min="1">
+      <input type="number" class="form-control" id="people" name="people" required placeholder="1" min="1">
       <div class="invalid-feedback">
         Please enter the number of people.
       </div>
@@ -33,13 +33,14 @@
 
     <div class="mb-3">
       <label for="price" class="form-label">Price</label>
-      <input type="text" class="form-control" id="price" name="price" required placeholder="0.00">
+      <input type="text" class="form-control" id="price" name="price" placeholder="0.00" disabled>
       <div class="invalid-feedback">
         Please enter a valid price.
       </div>
     </div>
 
-    <a href="{{ url_for('app.hotel_payment_info')}}" class="btn btn-primary">Confirm Booking</a>
+    <input type="hidden" id="id" name="id">
+    <button class="w-100 btn btn-lg btn-primary" type="submit">Confirm Booking</button>
   </form>
 
   <ul class="list-group mt-4">
@@ -58,4 +59,33 @@
     {% endfor %}
   </ul>
 </div> 
+<script>
+const urlParams = new URLSearchParams(location.search)
+document.getElementById('id').value = urlParams.get('id')
+document.getElementById('price').value = urlParams.get('price')
+
+document.querySelector('#people').addEventListener('input', function() {
+  const days = 1 // 
+  document.getElementById('price').value = urlParams.get('price') * days
+})
+
+function onSubmit(self) {
+    event.preventDefault()
+    const data = new FormData(self)
+    // const route = data.get('route')
+    // if (!route) {
+    //   return alert('Please select route')
+    // }
+
+    fetch('{{ url_for('app.order_add') }}', { method: 'POST', body: data })
+      .then(res => res.text()).then(res => {
+        try {
+          location.replace('{{ url_for('app.hotel_payment_info') }}')
+        } catch(e) {
+          console.log(e)
+          alert(res)
+        }
+      })
+  }
+</script>
 {% endblock %}

@@ -1,6 +1,6 @@
 from flask import Blueprint, current_app, session, request, render_template, redirect, url_for, jsonify
 import json
-from .objects import Order, OrderEnum, Review
+from .objects import Order, OrderEnum, Hotel, Review
 from . import db
 from .init import init_data
 
@@ -28,7 +28,7 @@ def index():
 def hotel_list():
     log('enter test page')
     hotel_list = Hotel.query.all()
-    return render_template("test.html", list=hotel_list)
+    return render_template("hotel-index.html", list=hotel_list)
 
 @app.route("/order/add", methods=['POST'])
 def order_add():
@@ -89,52 +89,6 @@ def review_add():
     db.session.commit()
     return 'Add review success!'
 
-@app.route("/test")
-def test():
-    log('enter test page')
-    order_list = Order.query.all()
-    return render_template("test.html", list=order_list)
-
-@app.route("/test/add", methods=['POST'])
-def test_add():
-    name = request.form.get('name')
-    price = request.form.get('price')
-    order = Order(name=name, price=price)
-    db.session.add(order)
-    db.session.commit()
-    return 'Add order success!'
-
-@app.route("/test/delete", methods=['Delete'])
-def test_delete():
-    id = request.args.get('id')
-    order = Order.query.filter_by(id=id).first()
-    if order:
-        db.session.delete(order)
-        db.session.commit()
-        return 'Delete order success!' 
-    else:
-        return 'No found order'
-
-@app.route("/test/update", methods=['PUT'])
-def test_update():
-    id = request.form.get('id')
-    order = Order.query.filter_by(id=id).first()
-    order.name = request.form.get('name')
-    order.price = request.form.get('price')
-    db.session.commit()
-    return 'Update order success!'
-
-@app.route("/test/list", methods=['GET'])
-def test_list():
-    order_list = Order.query.all()
-    order_dict = [result.as_dict() for result in order_list]
-    return json.dumps(order_dict, default=str)
-
-@app.route("/hotel-index")
-def hotel_index():
-    # log('enter hotel page')
-    # order_list = Order.query.all()
-    return render_template("hotel-index.html", list=[{}, {}, {}])
 
 @app.route("/hotel-order")
 def hotel_order():
@@ -151,7 +105,10 @@ def hotel_payment_success():
 
 @app.route("/order-list")
 def order_list():
-    return render_template("order-list.html", list=[{}, {}], order_state={})
+    # list = Order.query.filter_by(user_id=id)
+    list = Order.query.all()
+    order_state = { state.value: state.name.lower() for state in OrderEnum}
+    return render_template("order-list.html", list=list, order_state=order_state)
 
 @app.route('/init_data')
 def init_data_interface():

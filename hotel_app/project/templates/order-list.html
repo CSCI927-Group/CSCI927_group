@@ -7,10 +7,10 @@
   <table class="table">
     <thead>
       <tr>
-        <th scope="col">Ride Route</th>
+        <th scope="col">Name</th>
         <th scope="col">Price</th>
-        <th scope="col">State</th>
         <th scope="col">Date</th>
+        <th scope="col">State</th>
         <th scope="col">Operate</th>
       </tr>
     </thead>
@@ -19,7 +19,8 @@
       <tr>
         <th>{{ item.name }}</th>
         <th>${{ item.price }}</th>
-        <th>{{ order_state[item.state] }}</th>
+        <th>{{ item.startDate }}-{{item.endDate}}</th>
+        <th>{{ order_state[item.status] }}</th>
         <th>{{ item.datestr }}</th>
         <th>
           <button class="btn btn-primary btn-sm" onclick="onView({{ item.id }}, {{ item.state }})">
@@ -28,10 +29,45 @@
           <button class="btn btn-danger btn-sm" onclick="onDelete({{ item.id }})">
             <i class="bi bi-trash"></i> Delete
           </button>
+          <button class="btn btn-primary btn-sm" onclick="onCheckIn({{ item.id }})">
+            <i class="bi bi-trash"></i> Check In
+          </button>
+          <button class="btn btn-primary btn-sm" onclick="onCheckOut({{ item.id }})">
+            <i class="bi bi-trash"></i> Check Out
+          </button>
         </th>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 </div>
+<script>
+
+function onView(id, state) {
+  if (state == 1 || state == 5 || state == 6) {
+    location.href = `{{ url_for('app.ride_payment') }}?id=${id}`
+  } else if (state == 2) { // paid
+    location.href = `{{ url_for('app.ride_location') }}?id=${id}`
+  } else if (state == 3) { // onboard
+    location.href = `{{ url_for('app.ride_onboard') }}?id=${id}`
+  } else if (state == 4) { // complete
+    location.href = `{{ url_for('app.ride_complete') }}?id=${id}`
+  }
+}
+
+function onCheckIn(id) {
+  fetch(`{{ url_for('app.order_checkin') }}?id=${id}`, { method: 'PUT' })
+  .then(res=>res.text()).then(res => {
+    alert(res)
+    location.reload()
+  })
+}
+function onCheckOut(id) {
+  fetch(`{{ url_for('app.order_checkout') }}?id=${id}`, { method: 'PUT' })
+  .then(res=>res.text()).then(res => {
+    alert(res)
+    location.reload()
+  })
+}
+</script>
 {% endblock %}
