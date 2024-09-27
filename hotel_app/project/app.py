@@ -5,6 +5,7 @@ from . import db
 from .init import init_data
 
 app = Blueprint('app', __name__)
+
 def log(event):
     id, name, email = getUser()
     current_app.logger.info(f'{id}, {name}, {event}, CUSTOMLOG')
@@ -15,6 +16,7 @@ def getUser():
         session.get('user_name', 'anonymous'),
         session.get('user_email', 'none')
     ]
+
 #
 ##
 ### Route logic
@@ -36,8 +38,6 @@ def index():
 def hotel_index():
     log('enter test page')
     hotel_list = Hotel.query.all()
-    # id = getUser()[0]
-    # order = Hotel.query.filter_by(id=id)
     return render_template("hotel-index.html", list=hotel_list)
 
 @app.route("/order/add", methods=['POST'])
@@ -47,7 +47,7 @@ def order_add():
     price = request.form.get('price')
     startDate = request.form.get('startDate')
     endDate = request.form.get('endDate')
-    status = OrderEnum.ORDER.value
+    status = OrderEnum.UNPAY.value
     
     hotel = Hotel.query.filter_by(id=id).first()
     order = Order(name=hotel.name, price=price, startDate=startDate, endDate=endDate, status=status, uid=uid)
@@ -55,9 +55,8 @@ def order_add():
     db.session.commit()
     return 'Add order success!'
 
-@app.route("/order/cancel", methods=['Delete'])
+@app.route("/order/cancel", methods=['DELETE'])  # Change to DELETE
 def order_cancel():    
-
     id = request.args.get('id')
     order = Order.query.filter_by(id=id).first()
     if order:
@@ -65,7 +64,7 @@ def order_cancel():
         db.session.commit()
         return 'Delete order success!' 
     else:
-        return 'No found order'
+        return 'No order found'
 
 @app.route("/order/checkin", methods=['PUT'])
 def order_checkin():
@@ -100,7 +99,6 @@ def review_add():
     db.session.commit()
     return 'Add review success!'
 
-
 @app.route("/hotel-order")
 def hotel_order():
     return render_template("hotel-order.html")
@@ -113,10 +111,8 @@ def hotel_payment_info():
 def hotel_payment_success():
     return render_template("hotel_payment_success.html")
 
-
 @app.route("/order-list")
 def order_list():
-    # list = Order.query.filter_by(user_id=id)
     list = Order.query.all()
     order_state = { state.value: state.name.lower() for state in OrderEnum}
     return render_template("order-list.html", list=list, order_state=order_state)
@@ -124,4 +120,34 @@ def order_list():
 @app.route('/review_content', methods=['GET'])
 def review_content():
     return render_template('review_content.html')
+
+@app.route('/order/delete', methods=['DELETE'])  # New route to delete an order
+def delete_order():
+    order_id = request.args.get('id', type=int)
+    order = Order.query.get(order_id)
+    if order:
+        db.session.delete(order)
+        db.session.commit()
+        return jsonify({'message': 'Order deleted successfully.'}), 200
+    return jsonify({'message': 'Order not found.'}), 404
+
+@app.route('/cancel_order', methods=['PUT'])
+def cancel_order():
+    order_id = request.args.get('id')
+    order = Order.query.get(order_id)
+    
+    if order:
+        order.status = OrderEnum.CANCEL.value  # Update status to cancelled
+        db.session.commit()
+        return jsonify({'message': 'Order has been cancelled'}), 200
+    return jsonify({'message': 'Order not found'}), 404
+
+
+@app.route("/order/pay", methods=['PUT'])
+def order_pay():
+    id = request.args.get('id')
+    order = Order.query.filter_by(id=id).first()
+    order.status = OrderEnum.ORDER.value
+    db.session.commit()
+    return 'Update order success!'
 

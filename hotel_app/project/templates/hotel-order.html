@@ -34,10 +34,6 @@
     <div class="mb-3">
       <label for="price" class="form-label">Price</label>
       <span id="price"></span>
-      <!-- <input type="text" class="form-control" id="price" name="price" placeholder="0.00" disabled>
-      <div class="invalid-feedback">
-        Please enter a valid price. -->
-      </div>
     </div>
 
     <input type="hidden" id="id" name="id">
@@ -60,34 +56,45 @@
     {% endfor %}
   </ul>
 </div> 
-<script>
-const urlParams = new URLSearchParams(location.search)
-document.getElementById('id').value = urlParams.get('id')
-document.getElementById('price').innerText = urlParams.get('price')
 
-document.querySelector('#people').addEventListener('input', function() {
-  const days = 1 // 
-  document.getElementById('price').innerText = urlParams.get('price') * days
-})
+<script>
+const urlParams = new URLSearchParams(location.search);
+document.getElementById('id').value = urlParams.get('id');
+document.getElementById('price').innerText = urlParams.get('price');
+
+// Add event listener to update price
+document.getElementById('start-date').addEventListener('change', updatePrice);
+document.getElementById('end-date').addEventListener('change', updatePrice);
+
+function updatePrice() {
+  const startDateInput = document.getElementById('start-date').value;
+  const endDateInput = document.getElementById('end-date').value;
+
+  // Make sure the date input is valid
+  if (startDateInput && endDateInput) {
+    const startDate = new Date(startDateInput);
+    const endDate = new Date(endDateInput);
+
+    // Check if the end date is greater than the start date
+    if (endDate > startDate) {
+      const days = (endDate - startDate) / (1000 * 60 * 60 * 24); // calculate days
+      const basePrice = parseFloat(urlParams.get('price')); // Get base price
+      document.getElementById('price').innerText = (basePrice * days).toFixed(2); // Update price
+    } else {
+      document.getElementById('price').innerText = urlParams.get('price'); // If the date is invalid, display the base price
+    }
+  }
+}
 
 function onSubmit(self) {
-    event.preventDefault()
-    const data = new FormData(self)
-    // const route = data.get('route')
-    // if (!route) {
-    //   return alert('Please select route')
-    // }ajax
-    data.set('price', document.getElementById('price').innerText)
+    event.preventDefault();
+    const data = new FormData(self);
+    data.set('price', document.getElementById('price').innerText);
     fetch('{{ url_for('app.order_add') }}', { method: 'POST', body: data })
       .then(res => res.text()).then(res => {
-        try {
-          alert(res)
-          location.replace('{{ url_for('app.hotel_payment_info') }}')
-        } catch(e) {
-          console.log(e)
-          alert(res)
-        }
-      })
-  }
+        alert(res); // Alert the success message
+        location.href = '{{ url_for('app.hotel_payment_info') }}?order_id=' + document.getElementById('id').value; // Redirect to payment info
+      });
+}
 </script>
 {% endblock %}

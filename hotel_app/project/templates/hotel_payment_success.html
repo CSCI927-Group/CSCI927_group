@@ -6,5 +6,6 @@
 <div class="container my-5 text-center">
   <h2>Payment Successful!</h2>
   <!-- <p>A confirmation email has been sent to {{ email }}.</p> -->
+  <a href="{{ url_for('app.order_list') }}" class="btn btn-primary mt-4">Back to My Booking</a>
 </div>
 {% endblock %}

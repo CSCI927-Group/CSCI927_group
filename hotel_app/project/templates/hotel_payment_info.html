@@ -6,7 +6,7 @@
 <div class="container col-xl-10 col-xxl-8 px-4 py-5">
   <div class="row g-lg-5 py-5">
       <!-- Use POST method to collect email and card details -->
-      <form action="{{ url_for('app.hotel_payment_info') }}" method="POST" class="needs-validation" novalidate>
+      <form method="PUT" class="needs-validation" onpay="return onPay(this)">
         <h4 class="mb-3">Payment</h4>
 
         <!-- Email Field (required)
@@ -49,16 +49,28 @@
             <label for="cc-cvv" class="form-label">CVV</label>
             <input type="text" class="form-control" id="cc-cvv" name="cc_cvv" required placeholder="">
             <div class="invalid-feedback">
-              Security code is required
+                Security code is required
             </div>
-          </div>
         </div>
+        
 
         <hr class="my-4">
 
         <!-- Continue to Payment Button -->
-        <a href="{{ url_for('app.hotel_payment_success')}}" class="btn btn-primary">Continue to Pay</a>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Continue to Pay</button>
       </form>
     </div>
 </div>
+<script>
+    function onPay(self) {
+    event.preventDefault();
+    const data = new FormData(self);
+    data.set('price', document.getElementById('price').innerText);
+    fetch('{{ url_for('app.order_add') }}', { method: 'PUT', body: data })
+      .then(res => res.text()).then(res => {
+        alert(res); // Alert the success message
+        location.href = '{{ url_for('app.hotel_payment_success') }}?order_id=' + document.getElementById('id').value; // Redirect to payment info
+      });
+    }
+</script>
 {% endblock %}
