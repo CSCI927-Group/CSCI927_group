@@ -47,7 +47,7 @@ def order_add():
     price = request.form.get('price')
     startDate = request.form.get('startDate')
     endDate = request.form.get('endDate')
-    status = OrderEnum.UNPAY.value
+    status = OrderEnum.ORDER.value
     
     hotel = Hotel.query.filter_by(id=id).first()
     order = Order(name=hotel.name, price=price, startDate=startDate, endDate=endDate, status=status, uid=uid)
@@ -114,12 +114,12 @@ def hotel_payment_success():
 @app.route("/order-list")
 def order_list():
     list = Order.query.all()
-    order_state = { state.value: state.name.lower() for state in OrderEnum}
+    order_state = { state.value: state.name.lower() for state in OrderEnum }
     return render_template("order-list.html", list=list, order_state=order_state)
 
-@app.route('/review_content', methods=['GET'])
-def review_content():
-    return render_template('review_content.html')
+@app.route('/review_submit', methods=['GET'])
+def review_submit():
+    return render_template('review_submit.html')
 
 @app.route('/order/delete', methods=['DELETE'])  # New route to delete an order
 def delete_order():
@@ -145,9 +145,25 @@ def cancel_order():
 
 @app.route("/order/pay", methods=['PUT'])
 def order_pay():
-    id = request.args.get('id')
-    order = Order.query.filter_by(id=id).first()
-    order.status = OrderEnum.ORDER.value
-    db.session.commit()
-    return 'Update order success!'
+    try:
+        id = request.args.get('id')
+        
+        if not id:
+            return 'Order ID is required', 400  # Return 400 error if ID is not provided
+
+        order = Order.query.filter_by(id=id).first()
+        
+        if not order:
+            return 'Order not found', 404  # Return 404 error if order is not found
+
+        order.status = OrderEnum.ORDER.value
+        db.session.commit()
+        
+        return 'Update order success!', 200  # Return 200 status code for successful update
+    except Exception as e:
+        return f'An error occurred: {str(e)}', 500  # Return 500 error and output exception message
+
+
+
+
 
