@@ -49,7 +49,7 @@
             </button>
             {% endif %}
 
-            {% if item.status == 5 %}
+            {% if item.status == 1 %}
             <button class="btn btn-secondary btn-sm me-2" style="width: 100px;" onclick="onCancel({{ item.id }})" id="cancel-btn-{{ item.id }}">
               <i class="bi bi-x-circle"></i> Cancel
             </button>
@@ -111,13 +111,15 @@ function onCheckOut(id) {
   fetch(`{{ url_for('app.order_checkout') }}?id=${id}`, { method: 'PUT' })
     .then(res => {
       if (!res.ok) throw new Error('Check-out failed');
-      return res.text();
+      return res.text(); // Return the response as text
     })
     .then(res => {
-      alert(res);
+      alert(res); // Show success message
+
+      // Get the order row and update the state cell
       const orderRow = document.getElementById(`order-row-${id}`);
-      const stateCell = orderRow.cells[3]; // Assuming state is the fourth cell
-      stateCell.textContent = 'Checked Out'; // Update state
+      const stateCell = orderRow.cells[3]; // Assuming state is in the fourth cell
+      stateCell.textContent = 'Checked Out'; // Update the state
 
       // Hide the "Cancel" button
       const cancelBtn = document.getElementById(`cancel-btn-${id}`);
@@ -129,10 +131,7 @@ function onCheckOut(id) {
 
       // Show the "Start Review" button
       const startReviewBtn = document.getElementById(`start-review-btn-${id}`);
-      if (startReviewBtn) startReviewBtn.style.display = 'inline-block';
-      
-      // Optionally reload the page if needed
-      // location.reload();
+      if (startReviewBtn) startReviewBtn.style.display = 'inline-block'; // Make it visible
     })
     .catch(error => {
       alert('Error: ' + error.message);
@@ -150,8 +149,33 @@ function onDelete(id) {
   }
 }
 function startReview(id) {
-  // Redirect to the review content page with the order ID
-  window.location.href = `{{ url_for('app.review_submit') }}?id=${id}`;
+  // Send a request to update the order state on the server
+  fetch(`{{ url_for('app.order_startReview') }}?id=${id}`, { method: 'PUT' })
+    .then(res => {
+      if (!res.ok) throw new Error('Failed to update state');
+      return res.json(); // Assuming the server returns JSON
+    })
+    .then(res => {
+      // Update the order state to "Reviewed" in the UI
+      const orderRow = document.getElementById(`order-row-${id}`);
+      const stateCell = orderRow.cells[3]; // Assuming state is the fourth cell
+      stateCell.textContent = 'Reviewed';
+
+      // Hide all buttons except for the "Delete" button
+      const buttons = orderRow.querySelectorAll('button');
+      buttons.forEach(button => {
+        if (!button.classList.contains('btn-danger')) { // Keep the delete button visible
+          button.style.display = 'none';
+        }
+      });
+
+      // Redirect to the review content page with the order ID
+      window.location.href = `{{ url_for('app.review_submit') }}?id=${id}`;
+    })
+    .catch(error => {
+      alert('Error: ' + error.message);
+    });
 }
+
 </script>
 {% endblock %}

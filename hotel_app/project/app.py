@@ -164,6 +164,19 @@ def order_pay():
         return f'An error occurred: {str(e)}', 500  # Return 500 error and output exception message
 
 
+@app.route("/order/start_review", methods=['PUT'])
+def order_startReview():
+    id = request.args.get('id')
+    order = Order.query.filter_by(id=id).first()
+
+    if not order:
+        return jsonify({"error": "Order not found."}), 404
+
+    # Update order status to 'Reviewed'
+    order.status = OrderEnum.REVIEWED.value
+    db.session.commit()
+
+    return jsonify({"message": "Update order to reviewed success!"}), 200  # Return a JSON response
 
 
 
