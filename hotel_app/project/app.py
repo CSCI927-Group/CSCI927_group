@@ -47,7 +47,7 @@ def order_add():
     price = request.form.get('price')
     startDate = request.form.get('startDate')
     endDate = request.form.get('endDate')
-    status = OrderEnum.UNPAY.value
+    status = OrderEnum.ORDER.value
     
     hotel = Hotel.query.filter_by(id=id).first()
     order = Order(name=hotel.name, price=price, startDate=startDate, endDate=endDate, status=status, uid=uid)

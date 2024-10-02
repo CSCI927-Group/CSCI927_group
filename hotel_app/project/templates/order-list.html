@@ -75,9 +75,11 @@ function onCancel(id) {
       })
       .then(res => {
         alert('Cancellation successful');
+        // Reload the page to get updated order information
+        location.reload(); // Add this line to refresh the page
         const orderRow = document.getElementById(`order-row-${id}`);
         const stateCell = orderRow.cells[3]; // Assuming state is the fourth cell
-        stateCell.textContent = 'Cancelled';
+        stateCell.textContent = 'Cancel';
         
         // Hide buttons
         document.getElementById(`cancel-btn-${id}`).style.display = 'none';
@@ -115,6 +117,8 @@ function onCheckOut(id) {
     })
     .then(res => {
       alert(res); // Show success message
+      // Reload the page to get updated order information
+      location.reload(); // Add this line to refresh the page
 
       // Get the order row and update the state cell
       const orderRow = document.getElementById(`order-row-${id}`);
