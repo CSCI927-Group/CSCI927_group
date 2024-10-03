@@ -53,7 +53,7 @@ def order_add():
     order = Order(name=hotel.name, price=price, startDate=startDate, endDate=endDate, status=status, uid=uid)
     db.session.add(order)
     db.session.commit()
-    return 'Add order success!'
+    return { 'order_id': order.id } # 'Add order success!'
 
 @app.route("/order/cancel", methods=['DELETE'])  # Change to DELETE
 def order_cancel():    

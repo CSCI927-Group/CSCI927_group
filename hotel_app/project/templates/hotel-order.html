@@ -59,7 +59,7 @@
 
 <script>
 const urlParams = new URLSearchParams(location.search);
-document.getElementById('id').value = urlParams.get('id');
+document.getElementById('id').value = urlParams.get('id'); // hotel id
 document.getElementById('price').innerText = urlParams.get('price');
 
 // Add event listener to update price
@@ -92,8 +92,14 @@ function onSubmit(self) {
     data.set('price', document.getElementById('price').innerText);
     fetch('{{ url_for('app.order_add') }}', { method: 'POST', body: data })
       .then(res => res.text()).then(res => {
-        alert(res); // Alert the success message
-        location.href = '{{ url_for('app.hotel_payment_info') }}?order_id=' + document.getElementById('id').value; // Redirect to payment info
+        try {
+          alert('Add order success!'); // Alert the success message
+          const data = JSON.parse(res)
+          location.href = '{{ url_for('app.hotel_payment_info') }}?order_id=' + data.order_id; // Redirect to payment info
+        } catch(e) {
+          console.log(e)
+          alert(res)
+        }
       });
 }
 </script>
