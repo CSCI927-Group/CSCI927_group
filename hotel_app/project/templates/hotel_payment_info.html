@@ -58,15 +58,15 @@
         <hr class="my-4">
 
         <!-- Continue to Payment Button -->
-        <button type="button" class="w-100 btn btn-lg btn-primary" id="continue-pay-btn" onclick="onPay(document.getElementById('id').value)">Continue to Pay</button>
+        <button type="button" class="w-100 btn btn-lg btn-primary" id="continue-pay-btn" onclick="onPay()">Continue to Pay</button>
 
       <!-- </form> -->
     </div>
 </div>
 <script>
-function onPay(id) {
+function onPay() {
   const urlParams = new URLSearchParams(location.search);
-  const id = urlParams.get('id');
+  const id = urlParams.get('order_id');
   console.log('onPay called with id:', id);  // debug output
 
   fetch(`{{ url_for('app.order_pay') }}?id=${id}`, { method: 'PUT' })
@@ -75,12 +75,9 @@ function onPay(id) {
       return res.text();
     })
     .then(res => {
-      alert(res);
-      const orderRow = document.getElementById(`order-row-${id}`);
-      const stateCell = orderRow.cells[3]; // Assuming state is the fourth cell
-      stateCell.textContent = 'ORDER'; // Update to reflect the new state
-      
-      location.href = '{{ url_for('app.hotel_payment_success') }}?order_id=' + document.getElementById('id').value; // Redirect to payment info
+      const data = JSON.parse(res)
+      alert(data.message);
+      location.href = '{{ url_for('app.hotel_payment_success') }}?order_id=' + id; // Redirect to payment info
     })
     .catch(error => {
       alert('Error: ' + error.message);
