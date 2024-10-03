@@ -47,7 +47,7 @@ def order_add():
     price = request.form.get('price')
     startDate = request.form.get('startDate')
     endDate = request.form.get('endDate')
-    status = OrderEnum.ORDER.value
+    status = OrderEnum.UNPAY.value
     
     hotel = Hotel.query.filter_by(id=id).first()
     order = Order(name=hotel.name, price=price, startDate=startDate, endDate=endDate, status=status, uid=uid)
@@ -149,19 +149,27 @@ def order_pay():
         id = request.args.get('id')
         
         if not id:
-            return 'Order ID is required', 400  # Return 400 error if ID is not provided
+            return jsonify({'error': 'Order ID is required'}), 400  # Return JSON error if ID is not provided
 
         order = Order.query.filter_by(id=id).first()
         
         if not order:
-            return 'Order not found', 404  # Return 404 error if order is not found
+            return jsonify({'error': 'Order not found'}), 404  # Return JSON error if order is not found
 
         order.status = OrderEnum.ORDER.value
         db.session.commit()
         
-        return 'Update order success!', 200  # Return 200 status code for successful update
+        # Prepare response data
+        response_data = {
+            'message': 'Update order success!',
+            'order_id': order.id,
+            'new_status': order.status
+        }
+        
+        return jsonify(response_data), 200  # Return JSON response for successful update
     except Exception as e:
-        return f'An error occurred: {str(e)}', 500  # Return 500 error and output exception message
+        return jsonify({'error': f'An error occurred: {str(e)}'}), 500  # Return JSON error and output exception message
+
 
 
 @app.route("/order/start_review", methods=['PUT'])

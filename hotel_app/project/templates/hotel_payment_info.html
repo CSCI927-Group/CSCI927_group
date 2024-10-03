@@ -65,7 +65,9 @@
 </div>
 <script>
 function onPay(id) {
-  console.log('onPay called with id:', id);  // 调试输出
+  const urlParams = new URLSearchParams(location.search);
+  const id = urlParams.get('id');
+  console.log('onPay called with id:', id);  // debug output
 
   fetch(`{{ url_for('app.order_pay') }}?id=${id}`, { method: 'PUT' })
     .then(res => {
