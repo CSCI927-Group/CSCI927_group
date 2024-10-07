@@ -3,7 +3,7 @@
 {% block title %}Order List{% endblock %}
 
 {% block content %}
-<div class="container col-md-8 mx-auto my-5">
+<div class="container col-md-12 mx-auto my-5">
   <div class="table-responsive">
     <table class="table" style="width: 100%; max-width: none;">
       <thead>
@@ -53,7 +53,7 @@
 
             {% if item.status == 3 %}
             <button class="btn btn-success btn-sm mb-1" id="start-review-btn-{{ item.id }}" style="width: 100px;" onclick="startReview({{ item.id }})">
-              <i class="bi bi-pencil"></i> Start Review
+              <i class="bi bi-pencil"></i> Rating
             </button>
             {% endif %}
           </td>
@@ -94,51 +94,11 @@ function onCancel(id) {
 }
 
 function onCheckIn(id) {
-  fetch(`{{ url_for('app.order_checkin') }}?id=${id}`, { method: 'PUT' })
-    .then(res => {
-      if (!res.ok) throw new Error('Check-in failed');
-      return res.text();
-    })
-    .then(res => {
-      alert(res);
-      location.reload();
-    })
-    .catch(error => {
-      alert('Error: ' + error.message);
-    });
+  window.location.href = `{{ url_for('app.hotel_check_in') }}?id=${id}`;
 }
 
 function onCheckOut(id) {
-  fetch(`{{ url_for('app.order_checkout') }}?id=${id}`, { method: 'PUT' })
-    .then(res => {
-      if (!res.ok) throw new Error('Check-out failed');
-      return res.text(); // Return the response as text
-    })
-    .then(res => {
-      alert(res); // Show success message
-      // Reload the page to get updated order information
-      location.reload(); // Add this line to refresh the page
-
-      // Get the order row and update the state cell
-      const orderRow = document.getElementById(`order-row-${id}`);
-      const stateCell = orderRow.cells[3]; // Assuming state is in the fourth cell
-      stateCell.textContent = 'Checked Out'; // Update the state
-
-      // Hide the "Cancel" button
-      const cancelBtn = document.getElementById(`cancel-btn-${id}`);
-      if (cancelBtn) cancelBtn.style.display = 'none';
-
-      // Hide the "Check Out" button
-      const checkOutBtn = document.getElementById(`checkout-btn-${id}`);
-      if (checkOutBtn) checkOutBtn.style.display = 'none';
-
-      // Show the "Start Review" button
-      const startReviewBtn = document.getElementById(`start-review-btn-${id}`);
-      if (startReviewBtn) startReviewBtn.style.display = 'inline-block'; // Make it visible
-    })
-    .catch(error => {
-      alert('Error: ' + error.message);
-    });
+  window.location.href = `{{ url_for('app.hotel_check_out') }}?id=${id}`;
 }
 
 function onDelete(id) {
@@ -152,32 +112,7 @@ function onDelete(id) {
   }
 }
 function startReview(id) {
-  // Send a request to update the order state on the server
-  fetch(`{{ url_for('app.order_startReview') }}?id=${id}`, { method: 'PUT' })
-    .then(res => {
-      if (!res.ok) throw new Error('Failed to update state');
-      return res.json(); // Assuming the server returns JSON
-    })
-    .then(res => {
-      // Update the order state to "Reviewed" in the UI
-      const orderRow = document.getElementById(`order-row-${id}`);
-      const stateCell = orderRow.cells[3]; // Assuming state is the fourth cell
-      stateCell.textContent = 'Reviewed';
-
-      // Hide all buttons except for the "Delete" button
-      const buttons = orderRow.querySelectorAll('button');
-      buttons.forEach(button => {
-        if (!button.classList.contains('btn-danger')) { // Keep the delete button visible
-          button.style.display = 'none';
-        }
-      });
-
-      // Redirect to the review content page with the order ID
-      window.location.href = `{{ url_for('app.review_submit') }}?id=${id}`;
-    })
-    .catch(error => {
-      alert('Error: ' + error.message);
-    });
+  window.location.href = `{{ url_for('app.review_submit') }}?id=${id}`;
 }
 
 </script>

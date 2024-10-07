@@ -3,50 +3,80 @@
 {% block title %}Submit Your Review{% endblock %}
 
 {% block content %}
-<div class="container my-5">
+<style>
+    .star-rating {
+        direction: rtl;
+        display: inline-flex;
+    }
+    .star-rating input[type="radio"] {
+        display: none;
+    }
+    .star-rating label {
+        font-size: 2rem;
+        color: #ddd;
+        cursor: pointer;
+    }
+    .star-rating input[type="radio"]:checked ~ label {
+        color: #f5c518;
+    }
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+        color: #f5c518;
+    }
+</style>
+<form class="container my-5" onsubmit="return onSubmit(this)">
     <h2 class="mb-4">Submit Your Review</h2>
     
     <div class="mb-3">
-        <label for="rating" class="form-label">Rating (0-5)</label>
-        <select class="form-select" id="rating" name="rating" required>
-            <option value="" disabled selected>Select your rating</option>
-            {% for i in range(6) %}
-            <option value="{{ i }}">{{ i }}</option>
-            {% endfor %}
-        </select>
+        <div for="rating" class="form-label">Rating (0-5)</div>
+        <div class="star-rating">
+            <input type="radio" id="5-stars" name="rating" value="5">
+            <label for="5-stars" class="star"><i class="bi bi-star-fill"></i></label>
+            <input type="radio" id="4-stars" name="rating" value="4">
+            <label for="4-stars" class="star"><i class="bi bi-star-fill"></i></label>
+            <input type="radio" id="3-stars" name="rating" value="3">
+            <label for="3-stars" class="star"><i class="bi bi-star-fill"></i></label>
+            <input type="radio" id="2-stars" name="rating" value="2">
+            <label for="2-stars" class="star"><i class="bi bi-star-fill"></i></label>
+            <input type="radio" id="1-star" name="rating" value="1">
+            <label for="1-star" class="star"><i class="bi bi-star-fill"></i></label>
+        </div>
     </div>
     
     <div class="mb-3">
         <label for="review" class="form-label">Your Review</label>
-        <textarea class="form-control" id="review" rows="4" required placeholder="Write your review here..."></textarea>
+        <textarea class="form-control" id="review" name="review" rows="4" required placeholder="Write your review here..."></textarea>
     </div>
     
-    <button id="submitReview" class="btn btn-primary">Submit</button>
-    <a href="{{ url_for('app.index') }}" class="btn btn-outline-primary mx-2">Home</a>
-</div>
+    <button id="submitReview" type="submit" class="btn btn-primary">Submit</button>
+    <a href="{{ url_for('app.order_list') }}" class="btn btn-danger mx-2">Go Back</a>
+</for>
 
 <script>
-    // Store the URL for redirection
-    const homeUrl = "{{ url_for('app.index') }}";
+const urlParams = new URLSearchParams(location.search);
+const orderId = urlParams.get('id'); // hotel id
 
-    document.getElementById('submitReview').addEventListener('click', function() {
-        const rating = document.getElementById('rating').value;
-        const review = document.getElementById('review').value;
+function onSubmit(self) {
+    event.preventDefault();
+    const data = new FormData(self);
+    data.set('oid', orderId)
 
-        if (rating && review) {
-            const confirmSubmission = confirm('Are you sure you want to submit your review?');
-            if (confirmSubmission) {
-                alert('Review submitted successfully!'); // Show success message
-                // Optionally, you can clear the fields
-                document.getElementById('rating').value = '';
-                document.getElementById('review').value = '';
-
-                // Redirect to app.index
-                window.location.href = homeUrl; // Use the stored URL
-            }
+    fetch('{{ url_for('app.review_update') }}', { method: 'POST', body: data })
+      .then(res => res.text()).then(res => {
+        alert(res); // Alert the success message
+        if ('{{ record.id }}') {
+            location.replace('{{ url_for('app.review_list') }}')
         } else {
-            alert('Please fill in all fields.');
+            location.replace('{{ url_for('app.order_list') }}')
         }
-    });
+      })
+}
+
+
+const ratingElem = document.querySelector('input[name="rating"][value="{{ record.rating }}"]')
+if (ratingElem) {
+    ratingElem.checked = true
+    document.querySelector('textarea[name="review"]').value = '{{ record.review}}'
+}
 </script>
 {% endblock %}

@@ -25,7 +25,7 @@
 
     <div class="mb-3">
       <label for="number-of-people" class="form-label">Number of People</label>
-      <input type="number" class="form-control" id="people" name="people" required placeholder="1" min="1">
+      <input type="number" class="form-control" id="people" name="people" required placeholder="1" min="1" value="1">
       <div class="invalid-feedback">
         Please enter the number of people.
       </div>
@@ -61,6 +61,15 @@
 const urlParams = new URLSearchParams(location.search);
 document.getElementById('id').value = urlParams.get('id'); // hotel id
 document.getElementById('price').innerText = urlParams.get('price');
+
+// Init start and end date
+const date = new Date()
+const year = date.toLocaleString('default', { year: 'numeric' });
+const month = date.toLocaleString('default', { month: '2-digit' });
+const day = date.toLocaleString('default', { day: '2-digit' });
+const dateStr = [year, month, day].join('-')
+document.getElementById('start-date').value = dateStr
+document.getElementById('end-date').value = dateStr
 
 // Add event listener to update price
 document.getElementById('start-date').addEventListener('change', updatePrice);

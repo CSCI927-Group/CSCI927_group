@@ -45,6 +45,7 @@ class Review(db.Model):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
     
     id = db.Column(db.Integer, primary_key=True)
-    uid = db.Column(db.Integer)
     oid = db.Column(db.Integer)
-    description = db.Column(db.String(1000))
+    date = db.Column(db.String(10))
+    rating = db.Column(db.Integer)
+    review = db.Column(db.String(1000))

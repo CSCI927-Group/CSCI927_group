@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% block title %}Order Check Out{% endblock %}
+
+{% block content %}
+<div class="container my-5 text-center">
+  <div>
+    <h2>Order Check Out</h2>
+    <button class="btn btn-primary mt-2 mb-5" onclick="onCheckOut()">Check Out</button>
+  </div>
+  <a href="{{ url_for('app.order_list') }}" class="btn btn-danger">Go Back</a>
+</div>
+<script>
+function onCheckOut() {
+  const urlParams = new URLSearchParams(location.search);
+  const id = urlParams.get('id'); // order id
+
+  fetch(`{{ url_for('app.order_checkout') }}?id=${id}`, { method: 'PUT' })
+    .then(res => {
+      if (!res.ok) throw new Error('Check-out failed');
+      return res.text();
+    })
+    .then(res => {
+      alert(res);
+      location.replace('{{ url_for('app.order_list') }}');
+    })
+    .catch(error => {
+      alert('Error: ' + error.message);
+    });
+}
+</script>
+{% endblock %}

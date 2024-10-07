@@ -1,10 +1,10 @@
 from flask import Blueprint, current_app, session, request, render_template, redirect, url_for, jsonify
-import json
+from datetime import datetime
 from .objects import Order, OrderEnum, Hotel, Review
 from . import db
 from .init import init_data
 
-app = Blueprint('app', __name__)
+app = Blueprint('app', __name__, static_folder='assets')
 
 def log(event):
     id, name, email = getUser()
@@ -72,7 +72,7 @@ def order_checkin():
     order = Order.query.filter_by(id=id).first()
     order.status = OrderEnum.CHECK_IN.value
     db.session.commit()
-    return 'Update order success!'
+    return 'Checkin success!'
 
 @app.route("/order/checkout", methods=['PUT'])
 def order_checkout():
@@ -80,24 +80,39 @@ def order_checkout():
     order = Order.query.filter_by(id=id).first()
     order.status = OrderEnum.CHECK_OUT.value
     db.session.commit()
-    return 'Update order success!'
+    return 'Checkout success!'
 
 @app.route("/reviews")
 def review_list():
     log('enter review page')
     review_list = Review.query.all()
-    return render_template("test.html", list=review_list)
+    return render_template("review-list.html", list=review_list)
 
-@app.route("/reviews/add", methods=['POST'])
-def review_add():
-    uid = getUser()[0]
-    oid = request.form.get('id')
-    description = request.form.get('description')
+@app.route("/reviews/update", methods=['POST'])
+def review_update():
+    oid = request.form.get('oid')
+    rating = request.form.get('rating')
+    review = request.form.get('review')
+    
+    order = Order.query.filter_by(id=oid).first()
+    if not order:
+        return jsonify({'error': 'Order not found'}), 404  # Return JSON error if order is not found
+    order.status = OrderEnum.REVIEWED.value    
 
-    review = Review(uid=uid, oid=oid, description=description)
-    db.session.add(review)
-    db.session.commit()
-    return 'Add review success!'
+    record = Review.query.filter_by(oid=oid).first()
+
+    date = datetime.now().strftime('%Y-%m-%d')
+    if not record:
+        record = Review(oid=oid, date=date, rating=rating, review=review)
+        db.session.add(record)
+        db.session.commit()
+        return 'Add review success!'
+    else:
+        record.date = date
+        record.rating = rating
+        record.review = review
+        db.session.commit()
+        return 'Update review success!'
 
 @app.route("/hotel-order")
 def hotel_order():
@@ -111,6 +126,14 @@ def hotel_payment_info():
 def hotel_payment_success():
     return render_template("hotel_payment_success.html")
 
+@app.route("/hotel_check_in")
+def hotel_check_in():
+    return render_template('hotel_check_in.html')
+
+@app.route("/hotel_check_out")
+def hotel_check_out():
+    return render_template('hotel_check_out.html')
+
 @app.route("/order-list")
 def order_list():
     list = Order.query.all()
@@ -119,7 +142,9 @@ def order_list():
 
 @app.route('/review_submit', methods=['GET'])
 def review_submit():
-    return render_template('review_submit.html')
+    oid = request.args.get('id')
+    record = Review.query.filter_by(oid=oid).first()
+    return render_template('review_submit.html', record=record)
 
 @app.route('/order/delete', methods=['DELETE'])  # New route to delete an order
 def delete_order():
@@ -169,22 +194,3 @@ def order_pay():
         return jsonify(response_data), 200  # Return JSON response for successful update
     except Exception as e:
         return jsonify({'error': f'An error occurred: {str(e)}'}), 500  # Return JSON error and output exception message
-
-
-
-@app.route("/order/start_review", methods=['PUT'])
-def order_startReview():
-    id = request.args.get('id')
-    order = Order.query.filter_by(id=id).first()
-
-    if not order:
-        return jsonify({"error": "Order not found."}), 404
-
-    # Update order status to 'Reviewed'
-    order.status = OrderEnum.REVIEWED.value
-    db.session.commit()
-
-    return jsonify({"message": "Update order to reviewed success!"}), 200  # Return a JSON response
-
-
-
