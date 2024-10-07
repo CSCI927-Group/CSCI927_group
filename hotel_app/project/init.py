@@ -9,7 +9,7 @@ def init_data():
         name="Grand Plaza Hotel", 
         description="Luxurious 5-star hotel with ocean views and top-notch amenities.", 
         price="250.0", 
-        image="/assets/bar.jpg", 
+        image="/assets/hotel.png", 
     )
 
     event2 = Hotel(
@@ -46,7 +46,7 @@ def init_data():
         price="150.0", 
         image="/assets/hall.jpg", 
     )
-    
+
 
 
 
