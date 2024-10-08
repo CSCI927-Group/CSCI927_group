@@ -26,9 +26,11 @@ def getUser():
 
 @app.route("/")
 def index():
-    session['user_id'] = request.args.get('user_id')
-    session['user_name'] = request.args.get('user_name')
-    session['user_email'] = request.args.get('user_email')
+    if request.args.get('user_id'):
+        session['user_id'] = request.args.get('user_id')
+        session['user_name'] = request.args.get('user_name')
+        session['user_email'] = request.args.get('user_email')
+
     log("enter index")
     return render_template('index.html')
 
