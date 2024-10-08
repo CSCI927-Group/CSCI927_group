@@ -24,9 +24,6 @@
           <td>{{ order_state[item.status] }}</td>
           <td>
             <div class="d-inline">
-              <!-- <button class="btn btn-secondary btn-sm me-2" style="width: 100px;" onclick="onCancel({{ item.id }})" id="cancel-btn-{{ item.id }}">
-                <i class="bi bi-x-circle"></i> Cancel
-              </button> -->
               <button class="btn btn-danger btn-sm mb-1" style="width: 100px;" onclick="onDelete({{ item.id }})">
                 <i class="bi bi-trash"></i> Delete
               </button>
@@ -44,9 +41,9 @@
             <button class="btn btn-primary btn-sm mb-1" id="checkin-btn-{{ item.id }}" style="width: 100px;" onclick="onCheckIn({{ item.id }})">
               <i class="bi bi-check-circle"></i> Check In
             </button>
-            <button class="btn btn-secondary btn-sm me-2 mb-1" style="width: 100px;" onclick="onCancel({{ item.id }})" id="cancel-btn-{{ item.id }}">
+            <!-- <button class="btn btn-secondary btn-sm me-2 mb-1" style="width: 100px;" onclick="onCancel({{ item.id }})" id="cancel-btn-{{ item.id }}">
               <i class="bi bi-x-circle"></i> Cancel
-            </button>
+            </button> -->
             {% endif %}
             {% if item.status == 2 %}
             <button class="btn btn-primary btn-sm mb-1" id="checkout-btn-{{ item.id }}" style="width: 100px;" onclick="onCheckOut({{ item.id }})">
