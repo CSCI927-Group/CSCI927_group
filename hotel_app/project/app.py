@@ -79,7 +79,7 @@ def order_checkout():
 
 @app.route("/reviews")
 def review_list():
-    log('enter review page')
+    log('Enter review page')
     review_list = Review.query.all()
     return render_template("review-list.html", list=review_list)
 
@@ -101,12 +101,14 @@ def review_update():
         record = Review(oid=oid, date=date, rating=rating, review=review)
         db.session.add(record)
         db.session.commit()
+        log('Submit review')
         return 'Add review success!'
     else:
         record.date = date
         record.rating = rating
         record.review = review
         db.session.commit()
+        log('Update review')
         return 'Update review success!'
 
 @app.route("/hotel-order")
