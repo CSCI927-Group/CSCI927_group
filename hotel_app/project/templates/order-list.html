@@ -23,11 +23,11 @@
           <td>{{ item.startDate }} - {{ item.endDate }}</td>
           <td>{{ order_state[item.status] }}</td>
           <td>
-            <div class="d-inline">
+            <!-- <div class="d-inline">
               <button class="btn btn-danger btn-sm mb-1" style="width: 100px;" onclick="onDelete({{ item.id }})">
                 <i class="bi bi-trash"></i> Delete
               </button>
-            </div>
+            </div> -->
             
             {% if item.status == 0 %}
             <a class="btn btn-primary btn-sm mb-1" style="width: 100px;" href="{{ url_for('app.hotel_payment_info') }}?order_id={{ item.id }}">
@@ -36,6 +36,9 @@
             <button class="btn btn-secondary btn-sm me-2 mb-1" style="width: 100px;" onclick="onCancel({{ item.id }})" id="cancel-btn-{{ item.id }}">
               <i class="bi bi-x-circle"></i> Cancel
             </button>
+            <!-- <button class="btn btn-danger btn-sm mb-1" style="width: 100px;" onclick="onDelete({{ item.id }})">
+              <i class="bi bi-trash"></i> Delete
+            </button> -->
             {% endif %}
             {% if item.status == 1 %}
             <button class="btn btn-primary btn-sm mb-1" id="checkin-btn-{{ item.id }}" style="width: 100px;" onclick="onCheckIn({{ item.id }})">
@@ -54,6 +57,21 @@
             {% if item.status == 3 %}
             <button class="btn btn-success btn-sm mb-1" id="start-review-btn-{{ item.id }}" style="width: 100px;" onclick="startReview({{ item.id }})">
               <i class="bi bi-pencil"></i> Rating
+            </button>
+            <button class="btn btn-danger btn-sm mb-1" style="width: 100px;" onclick="onDelete({{ item.id }})">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+            {% endif %}
+
+            {% if item.status == 4 %}
+            <button class="btn btn-danger btn-sm mb-1" style="width: 100px;" onclick="onDelete({{ item.id }})">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+            {% endif %}
+
+            {% if item.status == 5 %}
+            <button class="btn btn-danger btn-sm mb-1" style="width: 100px;" onclick="onDelete({{ item.id }})">
+              <i class="bi bi-trash"></i> Delete
             </button>
             {% endif %}
           </td>
