@@ -31,13 +31,14 @@ def index():
     session['user_id'] = request.args.get('user_id')
     session['user_name'] = request.args.get('user_name')
     session['user_email'] = request.args.get('user_email')
+    log('Enter welcome page')
     return render_template('welcome.html')
 
 ### Hotel
 @app.route("/hotels")
 def hotel_index():
-    log('enter test page')
     hotel_list = Hotel.query.all()
+    log('Enter hotel index page')
     return render_template("hotel-index.html", list=hotel_list)
 
 @app.route("/order/add", methods=['POST'])
@@ -53,18 +54,8 @@ def order_add():
     order = Order(name=hotel.name, price=price, startDate=startDate, endDate=endDate, status=status, uid=uid)
     db.session.add(order)
     db.session.commit()
+    log(f'Add hotel {id} order')
     return { 'order_id': order.id } # 'Add order success!'
-
-@app.route("/order/cancel", methods=['DELETE'])  # Change to DELETE
-def order_cancel():    
-    id = request.args.get('id')
-    order = Order.query.filter_by(id=id).first()
-    if order:
-        db.session.delete(order)
-        db.session.commit()
-        return 'Delete order success!' 
-    else:
-        return 'No order found'
 
 @app.route("/order/checkin", methods=['PUT'])
 def order_checkin():
@@ -72,6 +63,7 @@ def order_checkin():
     order = Order.query.filter_by(id=id).first()
     order.status = OrderEnum.CHECK_IN.value
     db.session.commit()
+    log('Hotel check-in')
     return 'Checkin success!'
 
 @app.route("/order/checkout", methods=['PUT'])
@@ -80,6 +72,7 @@ def order_checkout():
     order = Order.query.filter_by(id=id).first()
     order.status = OrderEnum.CHECK_OUT.value
     db.session.commit()
+    log('Hotel check-out')
     return 'Checkout success!'
 
 @app.route("/reviews")
@@ -144,6 +137,7 @@ def order_list():
 def review_submit():
     oid = request.args.get('id')
     record = Review.query.filter_by(oid=oid).first()
+    log('Submit review')
     return render_template('review_submit.html', record=record)
 
 @app.route('/order/delete', methods=['DELETE'])  # New route to delete an order
@@ -153,6 +147,7 @@ def delete_order():
     if order:
         db.session.delete(order)
         db.session.commit()
+        log('Delete hotel order')
         return jsonify({'message': 'Order deleted successfully.'}), 200
     return jsonify({'message': 'Order not found.'}), 404
 
@@ -164,6 +159,7 @@ def cancel_order():
     if order:
         order.status = OrderEnum.CANCEL.value  # Update status to cancelled
         db.session.commit()
+        log('Cancel hotel order')
         return jsonify({'message': 'Order has been cancelled'}), 200
     return jsonify({'message': 'Order not found'}), 404
 
@@ -183,10 +179,11 @@ def order_pay():
 
         order.status = OrderEnum.ORDER.value
         db.session.commit()
+        log('Complete hotel order payment')
         
         # Prepare response data
         response_data = {
-            'message': 'Update order success!',
+            'message': 'Complete payment!',
             'order_id': order.id,
             'new_status': order.status
         }
