@@ -98,7 +98,7 @@ def availability(event_id):
 @app.route('/payment', methods=['GET'])
 def payment():
     ticket_id = request.args.get('ticket_id') 
-    email = request.args.get('email') 
+    email = getUser()[2] # request.args.get('email') 
     quantity = request.args.get('quantity', 1) 
 
     if email and ticket_id:
