@@ -37,47 +37,6 @@ def index():
 import os
 from flask import send_from_directory
 
-@app.route("/test")
-def test():
-    log('enter test page')
-    order_list = Order.query.all()
-    return render_template("test.html", list=order_list)
-
-@app.route("/test/add", methods=['POST'])
-def test_add():
-    name = request.form.get('name')
-    price = request.form.get('price')
-    order = Order(name=name, price=price)
-    db.session.add(order)
-    db.session.commit()
-    return 'Add order success!'
-
-@app.route("/test/delete", methods=['Delete'])
-def test_delete():
-    id = request.args.get('id')
-    order = Order.query.filter_by(id=id).first()
-    if order:
-        db.session.delete(order)
-        db.session.commit()
-        return 'Delete order success!' 
-    else:
-        return 'No found order'
-
-@app.route("/test/update", methods=['PUT'])
-def test_update():
-    id = request.form.get('id')
-    order = Order.query.filter_by(id=id).first()
-    order.name = request.form.get('name')
-    order.price = request.form.get('price')
-    db.session.commit()
-    return 'Update order success!'
-
-@app.route("/test/list", methods=['GET'])
-def test_list():
-    order_list = Order.query.all()
-    order_dict = [result.as_dict() for result in order_list]
-    return json.dumps(order_dict, default=str)
-
 def book_ticket(ticket_id, email, quantity):
     ticket = Ticketing.query.get(ticket_id)
     if ticket and ticket.available_tickets >= quantity:
