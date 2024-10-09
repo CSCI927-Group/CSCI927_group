@@ -8,9 +8,12 @@
 
   <div class="row">
     <div class="col-md-8">
-      <img src="{{ url_for('static', filename=item.image.replace('src/', '')) }}" class="img-fluid rounded mb-4" alt="{{ item.title }}">
-      <p>{{ item.content }}</p>
+      <!-- Updated image path to direct reference -->
+      <img src="/src/{{ item.image.split('/')[-1] }}" class="img-fluid rounded mb-4" alt="{{ item.title }}">
       <small class="text-muted">{{ item.read_time }}</small>
+      <p>{{ item.content }}</p>
+      <!-- Button to navigate to the corresponding event page -->
+      <a href="{{ url_for('app.event_info', event_id=item.event_id) }}" class="btn btn-primary mt-3">Go to Event</a>
     </div>
     <div class="col-md-4">
       <span class="text-danger">{{ item.source }}</span>

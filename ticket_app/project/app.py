@@ -1,10 +1,10 @@
-from flask import Blueprint, current_app, session, request, render_template, redirect, url_for, jsonify
+from flask import Blueprint, current_app, session, request, render_template, redirect, url_for, jsonify,flash
 import json
 from .objects import Order, Event, EventUpdate, Ticketing
 from . import db
 from .init import init_data
 
-app = Blueprint('app', __name__, static_folder='src')
+app = Blueprint('app', __name__,  static_url_path='/src',static_folder='src')
 def log(event):
     id, name, email = getUser()
     current_app.logger.info(f'{id}, {name}, {event}, CUSTOMLOG')
@@ -34,6 +34,8 @@ def index():
     log("enter index")
     return render_template('index.html')
 
+import os
+from flask import send_from_directory
 
 @app.route("/test")
 def test():
@@ -122,19 +124,37 @@ def payment_success():
     return render_template('payment_success.html', email=email)
 
 #my booking page
-@app.route('/my_booking')
-def my_booking():
-    log("enter my booking page")
-    return render_template('my_booking.html')
+# @app.route('/my_booking')
+# def my_booking():
+#     log("enter my booking page")
+#     return render_template('my_booking.html')
+# @app.route('/my-booking-check', methods=['GET'])
+# def my_booking_check():
+#     email = request.args.get('email')
+#     bookings = Ticketing.query.filter_by(email=email).all()  
+#     if bookings:
+#         return render_template('my_booking_tickets.html', bookings=bookings, email=email)
+#     else:
+#         # flash("Email not found. Please try again.", "danger")
+#         return redirect(url_for('my_booking'))
+# Booking Check Page
 @app.route('/my-booking-check', methods=['GET'])
 def my_booking_check():
     email = request.args.get('email')
-    bookings = Ticketing.query.filter_by(email=email).all()  
+    
+    # If no email provided, render an error message directly in the template
+    if not email:
+        return render_template('my_booking_tickets.html', bookings=[], email=email, message="No email provided. Please try again.")
+
+    # Query bookings based on email
+    bookings = Ticketing.query.filter_by(email=email).all()
+
     if bookings:
-        return render_template('my_booking_tickets.html', bookings=bookings, email=email)
+        # If bookings exist, render the booking tickets page
+        return render_template('my_booking_tickets.html', bookings=bookings, email=email, message=None)
     else:
-        # flash("Email not found. Please try again.", "danger")
-        return redirect(url_for('my_booking'))
+        # No bookings found, display a message on the same page
+        return render_template('my_booking_tickets.html', bookings=[], email=email, message="No bookings found for this email.")
 
 
 #Browse event page
