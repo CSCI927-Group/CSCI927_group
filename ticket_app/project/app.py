@@ -51,22 +51,27 @@ def book_ticket(ticket_id, email, quantity):
 @app.route('/availability/<int:event_id>')
 def availability(event_id):
     tickets = Ticketing.query.filter_by(event_id=event_id).all()  
+    log("view ticket availability")
     return render_template('availability.html', tickets=tickets)
 
 # Payment page using GET (collects email)
 @app.route('/payment', methods=['GET'])
 def payment():
+    log("enter payment page")
     ticket_id = request.args.get('ticket_id') 
     email = getUser()[2] # request.args.get('email') 
     quantity = request.args.get('quantity', 1) 
 
-    if email and ticket_id:
-        return redirect(url_for('app.payment_success', email=email, ticket_id=ticket_id, quantity=quantity))
+    # if email and ticket_id and quantity:
+    #     return redirect(url_for('app.payment_success', email=email, ticket_id=ticket_id, quantity=quantity))
     
-    return render_template('payment.html', ticket_id=ticket_id)
+    return render_template('payment.html', ticket_id=ticket_id,email=email)
+
+
 
 @app.route('/payment-success')
 def payment_success():
+    log("payment success")
     email = request.args.get('email')  
     ticket_id = request.args.get('ticket_id')  
     quantity = int(request.args.get('quantity', 1))  
@@ -99,8 +104,9 @@ def payment_success():
 # Booking Check Page
 @app.route('/my-booking-check', methods=['GET'])
 def my_booking_check():
-    email = request.args.get('email')
-    
+    log("check booking")
+    #email = request.args.get('email')
+    email = getUser()[2] # request.args.get('email') 
     # If no email provided, render an error message directly in the template
     if not email:
         return render_template('my_booking_tickets.html', bookings=[], email=email, message="No email provided. Please try again.")
@@ -119,11 +125,13 @@ def my_booking_check():
 #Browse event page
 @app.route('/browse_events')
 def browse_events():
+    log("start browsing events")
     events = Event.query.all()  
     return render_template('browse_events.html', events=events)
 
 @app.route('/event-info/<int:event_id>')
 def event_info(event_id):
+    log("viewing event infomation in detail")
     event = Event.query.get(event_id)  
     if event:
         return render_template('event_info.html', event=event)  
@@ -132,16 +140,19 @@ def event_info(event_id):
     
 @app.route('/news')
 def news():
+    log("enter news page")
     news_data = EventUpdate.query.filter_by(type='news').all()  
     updates_data = EventUpdate.query.filter_by(type='update').all()  
     return render_template('news.html', news_data=news_data, updates_data=updates_data)
 
 @app.route('/news/<int:news_id>')
 def news_detail(news_id):
+    log("view news detail")
     item = EventUpdate.query.get_or_404(news_id)  
     return render_template('news_detail.html', item=item)
 
 @app.route('/update/<int:update_id>')
 def update_detail(update_id):
+    log("view update detail")
     item = EventUpdate.query.get_or_404(update_id)  
     return render_template('update_detail.html', item=item)

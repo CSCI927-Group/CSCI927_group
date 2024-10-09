@@ -13,15 +13,16 @@
         </div>
         <div class="card-body">
           <p>Please enter your details below to complete the booking.</p>
-          
-          <form action="{{ url_for('app.payment') }}" method="GET" class="needs-validation" novalidate>
+
+          <!-- Update the action to point to the payment_success route -->
+          <form action="{{ url_for('app.payment_success') }}" method="GET" class="needs-validation" novalidate>
             <!-- Hidden field to pass ticket_id -->
             <input type="hidden" name="ticket_id" value="{{ request.args.get('ticket_id') }}">
 
             <!-- Email Field -->
             <div class="form-group mb-3">
               <label for="email" class="form-label">Email Address</label>
-              <input type="email" class="form-control" id="email" name="email" required placeholder="you@example.com">
+              <input type="email" class="form-control" id="email" name="email" value="{{ email }}">
               <div class="invalid-feedback">
                 Please enter a valid email address.
               </div>
@@ -36,12 +37,12 @@
               </div>
             </div>
 
-            <!-- Payment Details (Placeholder) -->
+            <!-- Payment Details -->
             <div class="form-group mb-3">
               <label for="cc-name" class="form-label">Name on Card</label>
               <input type="text" class="form-control" id="cc-name" placeholder="Full name as displayed on card" required>
               <div class="invalid-feedback">
-                Name on card is required
+                Name on card is required.
               </div>
             </div>
 
@@ -49,7 +50,7 @@
               <label for="cc-number" class="form-label">Credit Card Number</label>
               <input type="text" class="form-control" id="cc-number" placeholder="1234 5678 9012 3456" required>
               <div class="invalid-feedback">
-                Credit card number is required
+                Credit card number is required.
               </div>
             </div>
 
