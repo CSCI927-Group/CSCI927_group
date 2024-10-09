@@ -33,7 +33,7 @@ def login_post():
     login_user(user, remember=remember)
 
     if direction != 'None':
-        return redirect(direction + f'?user_id={user.id}&user_name={user.name}')
+        return redirect(direction + f'?user_id={user.id}&user_name={user.name}&user_email={user.email}')
     else:
         return redirect(url_for('main.index'))
   
