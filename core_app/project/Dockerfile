@@ -1,3 +1,9 @@
+# Linux
+sudo apt update
+sudo apt install docker.io
+sudo systemctl start docker
+sudo systemctl enable docker
+
 # Use an official Python runtime as a parent image
 FROM python:3.9-alpine
 
