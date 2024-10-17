@@ -3,7 +3,7 @@ from datetime import datetime
 from .objects import Order, OrderBill, OrderEnum
 from . import db
 
-app = Blueprint('app', __name__)
+app = Blueprint('app', __name__, static_folder='assets')
 def log(event):
     id, name, email = getUser()
     current_app.logger.info(f'{id}, {name}, {event}, CUSTOMLOG')

@@ -3,7 +3,7 @@
   "authorization": true,
 
   "index": "001",
-  "name": "Ticket Booking",
+  "name": "Simple Ticketing",
   "url": "http://localhost:8001/",
-  "photo": "https://cdn.seniorsguide.com/wp-content/uploads/2020/03/02132221/Backseat_Wife.jpg"
+  "photo": "http://localhost:8001/src/concert.jpg"
 }

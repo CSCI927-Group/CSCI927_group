@@ -2,13 +2,26 @@
 {% block title %}Tourism{% endblock %}
 
 {% block body %}
+<style>
+#notice {
+  text-align: center;
+  margin-top: 20vh;
+  color: cornflowerblue;
+}
+.microservice {
+  display: none;
+}
+</style>
 <div class="container">
   {% if username %}
   <h6>Welcome! {{ username }} </h6>
   {% endif %}
+  <h1 id="notice" class="display-1">
+    <i class="bi bi-balloon"></i> Coming soon...
+  </h1>
   <div class="row mt-5 row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
     {% for item in list %}
-    <div class="col">
+    <div class="col microservice">
       <div class="card shadow-sm" style="overflow: hidden;">
         <img style="height:250px; object-fit: cover; background:grey" src="{{ item.photo }}">
         <div class="card-body">
@@ -28,4 +41,15 @@
     {% endfor %}
   </div>
 </div>
+<script>
+  
+const notice = document.querySelector('#notice')
+const images = document.querySelectorAll('.microservice img')
+images.forEach((item, index) => {
+  item.onload = () => {
+    notice.style.display = 'none'
+    images[index].parentNode.parentNode.style.display = 'inline-block'
+  }
+})
+</script>
 {% endblock %}

@@ -10,9 +10,10 @@ main = Blueprint('main', __name__)
 def index():
     list = Module.query.all()
     online_list = filter(lambda item: item.online, list)
+    sorted_list = sorted(online_list, key=lambda x: x.index)
     username = current_user.name if current_user.is_authenticated else None
 
-    return render_template('index.html', list=online_list, username=username)
+    return render_template('index.html', list=sorted_list, username=username)
 
 @main.route('/profile')
 @login_required
