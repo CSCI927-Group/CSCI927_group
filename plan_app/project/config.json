@@ -1,9 +1,0 @@
-{
-  "register": "http://localhost:8000/internal/register",
-  "authorization": true,
-
-  "index": "004",
-  "name": "recommendation",
-  "url": "http://localhost:8004/",
-  "photo": "https://cdn.seniorsguide.com/wp-content/uploads/2020/03/02132221/Backseat_Wife.jpg"
-}
