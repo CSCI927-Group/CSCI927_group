@@ -1,30 +1,47 @@
-# CSCI927_group
-group Project for CSCI927
-
-## Shift assistant: 
-##### job duties:
-- [ ] Booking a meeting room. 
-- [ ] Recording the meeting information. 
-- [ ] Record and notify tasks of the week. 
-- [ ] Collate and upload the meeting reports (accompanied by a member contribution report).
-##### Shift schedules:
-| Name      | End Day     |
-| --------- | ----------- |
-| Hogan     | 05 Aug (W3) |
-| Flora     | 12 Aug (W4) |
-| Heyin     | 19 Aug (W5) |
-| Michael   | 26 Aug (W6) |
-| Vincent   | 02 Sep (W7) |
-| Zion      | 09 Sep (W8) |
-
-## Members:
-| Full Name     | Alias     |S Number  |Background   |Language    |UOW email              |
-| ------------- | --------- | -------- |------------ |----------  |---------------------- |
-| Sihua Liu     | Flora     | 8764979  |Management   |Python      | sl923@uowmail.edu.au  |
-| Xixian Huang  | Heyin     | 8891060  |Engineering  |Python      | xh992@uowmail.edu.au  |
-| Hongjian Deng | Hogan     | 8172924  |CS/IT        |JS, HTML    | hd089@uowmail.edu.au  |
-| Jingwei Li    | Michael   | 8089954  |CS/IT        |JS, HTML    | jl225@uowmail.edu.au  |
-| Lee Pin Yi    | Vincent   | 6001622  |CS/IT        |C++         | pyl494@uowmail.edu.au |
-| Zhen Chen     | Zion      | 8887597  |CS/IT        |Java, Swift | zc934@uowmail.edu.au  |
+# Tourism Ecosystem - Design and Implementation
 
 
+## Service list
+ - core_app - Gateway and authentication service
+ - ticket_app - Event Ticketing and Information service
+ - hotel_app - Accommodation service 
+ - ride_app - Transportation service 
+
+## Launch requirement
+When you need to use user information, run the `core_app` application first, and then start the corresponding application(`ticket_app`, `hotel_app`, `ride_app`).
+
+> No need to authenticate user information, no startup sequence required.
+
+## Install Dependencies and Run the Application
+### Python Version
+> We recommend using the latest version of Python. Flask supports Python 3.8 and newer.
+
+### Install Dependencies
+Use bash shell execute `exec_install.sh` script
+```bash
+sh exec_install.sh
+```
+**or** 
+
+execute the command in `exec_install.sh` script one by one
+```bash
+python3 -m venv .venv
+
+. .venv/bin/activate
+
+pip install flask flask-sqlalchemy flask-login
+```
+
+### Run the Application
+Use bash shell execute `exec_run.sh` script
+```bash
+sh exec_run.sh
+```
+**or** 
+
+execute the command in `exec_run.sh` script one by one, the port should same as `url` in the `config.json` file.
+```bash
+. .venv/bin/activate
+
+flask --app project run --port=8000 --debug
+```
